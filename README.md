@@ -17,7 +17,6 @@ Este projeto visa demonstrar o funcionamento básico de uma loja virtual, inclui
 > - JSON-Server ou Firebase (mock-backend REST)
 > - NgRx (gerenciamento de estado)
 > - ngx-webstorage (persistência local)
-> - Karma & Jasmine (testes unitários)
 
 ---
 
@@ -52,7 +51,6 @@ nexusstore/
 - [ ] Checkout com formulário reativo
 - [ ] Autenticação mock e rotas protegidas
 - [ ] Filtro e busca de produtos
-- [ ] Responsividade para mobile
 - [ ] Testes unitários de componentes e serviços
 
 ---
