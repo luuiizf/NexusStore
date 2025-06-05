@@ -1,0 +1,40 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Smartphone Galaxy S23",
+      "description": "O mais recente smartphone Samsung com câmera de 108MP",
+      "price": 4999.99,
+      "image": "https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg",
+      "category": "Eletrônicos",
+      "stock": 15
+    },
+    {
+      "id": 2,
+      "name": "Notebook Dell XPS",
+      "description": "Notebook premium com processador Intel i7",
+      "price": 7999.99,
+      "image": "https://images.pexels.com/photos/18105/pexels-photo.jpg",
+      "category": "Computadores",
+      "stock": 8
+    },
+    {
+      "id": 3,
+      "name": "Smart TV LG 55\"",
+      "description": "TV 4K com tecnologia OLED",
+      "price": 3999.99,
+      "image": "https://images.pexels.com/photos/6976094/pexels-photo-6976094.jpeg",
+      "category": "TVs",
+      "stock": 12
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "email": "admin@nexusstore.com",
+      "password": "admin123",
+      "role": "admin"
+    }
+  ],
+  "orders": []
+}
