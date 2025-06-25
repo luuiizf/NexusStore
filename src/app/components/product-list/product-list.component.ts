@@ -1,8 +1,8 @@
 import { Component, type OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
-import type { Router } from "@angular/router"
-import type { ProductService } from "../../services/product.service"
-import type { Product } from "../../models/product.model"
+import { Router } from "@angular/router"
+import { ProductService } from "../../services/product.service"
+import { Product } from "../../models/product.model"
 
 // PrimeNG Imports
 import { TableModule } from "primeng/table"
@@ -13,11 +13,11 @@ import { ToastModule } from "primeng/toast"
 import { ToolbarModule } from "primeng/toolbar"
 import { CardModule } from "primeng/card"
 import { InputTextModule } from "primeng/inputtext"
+import { FormsModule } from "@angular/forms"
 
 import { ConfirmationService, MessageService } from "primeng/api"
 
 @Component({
-    selector: "app-product-list",
     imports: [
         CommonModule,
         TableModule,
@@ -28,7 +28,9 @@ import { ConfirmationService, MessageService } from "primeng/api"
         ToolbarModule,
         CardModule,
         InputTextModule,
+        FormsModule,
     ],
+    
     providers: [ConfirmationService, MessageService],
     template: `
     <div class="space-y-6">
@@ -244,7 +246,9 @@ export class ProductListComponent implements OnInit {
     // Implementação do filtro global será feita pelo PrimeNG Table
   }
 
-  getCategorySeverity(categoria: string): string {
+  getCategorySeverity(
+    categoria: string
+  ): "success" | "secondary" | "info" | "warning" | "danger" | "contrast" | undefined {
     switch (categoria.toLowerCase()) {
       case "eletrônicos":
         return "info"
@@ -257,7 +261,9 @@ export class ProductListComponent implements OnInit {
     }
   }
 
-  getStockSeverity(estoque: number): string {
+  getStockSeverity(
+    estoque: number
+  ): "success" | "secondary" | "info" | "warning" | "danger" | "contrast" | undefined {
     if (estoque === 0) return "danger"
     if (estoque < 5) return "warning"
     return "success"

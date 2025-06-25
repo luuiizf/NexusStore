@@ -1,8 +1,8 @@
 import { Component, type OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
-import type { Router, ActivatedRoute } from "@angular/router"
-import type { ProductService } from "../../services/product.service"
-import type { Product } from "../../models/product.model"
+import { Router, ActivatedRoute } from "@angular/router"
+import { ProductService } from "../../services/product.service"
+import { Product } from "../../models/product.model"
 
 // PrimeNG Imports
 import { CardModule } from "primeng/card"
@@ -258,7 +258,9 @@ export class ProductDetailComponent implements OnInit {
     this.router.navigate(["/produtos"])
   }
 
-  getCategorySeverity(categoria: string): string {
+  getCategorySeverity(
+    categoria: string
+  ): "success" | "secondary" | "info" | "warning" | "danger" | "contrast" | undefined {
     switch (categoria.toLowerCase()) {
       case "eletrônicos":
         return "info"

@@ -1,8 +1,8 @@
 import { Component, type OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
-import { type FormBuilder, type FormGroup, Validators, ReactiveFormsModule } from "@angular/forms"
-import type { Router, ActivatedRoute } from "@angular/router"
-import type { ProductService } from "../../services/product.service"
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from "@angular/forms"
+import { Router, ActivatedRoute } from "@angular/router"
+import { ProductService } from "../../services/product.service"
 
 // PrimeNG Imports
 import { CardModule } from "primeng/card"

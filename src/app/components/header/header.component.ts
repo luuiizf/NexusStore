@@ -1,10 +1,11 @@
 import { Component } from "@angular/core"
-import type { Router } from "@angular/router"
+import { Router } from "@angular/router"
 import { ToolbarModule } from "primeng/toolbar"
 import { ButtonModule } from "primeng/button"
 import { CommonModule } from "@angular/common"
 
 @Component({
+    standalone: true,
     selector: "app-header",
     imports: [CommonModule, ToolbarModule, ButtonModule],
     template: `
