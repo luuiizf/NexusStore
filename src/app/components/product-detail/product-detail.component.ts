@@ -14,11 +14,10 @@ import { ConfirmDialogModule } from "primeng/confirmdialog"
 import { MessageService, ConfirmationService } from "primeng/api"
 
 @Component({
-  selector: "app-product-detail",
-  standalone: true,
-  imports: [CommonModule, CardModule, ButtonModule, TagModule, DividerModule, ToastModule, ConfirmDialogModule],
-  providers: [MessageService, ConfirmationService],
-  template: `
+    selector: "app-product-detail",
+    imports: [CommonModule, CardModule, ButtonModule, TagModule, DividerModule, ToastModule, ConfirmDialogModule],
+    providers: [MessageService, ConfirmationService],
+    template: `
     <div class="max-w-4xl mx-auto" *ngIf="product">
       <div class="mb-4">
         <p-button 
@@ -164,7 +163,7 @@ import { MessageService, ConfirmationService } from "primeng/api"
 
     <p-confirmDialog></p-confirmDialog>
     <p-toast></p-toast>
-  `,
+  `
 })
 export class ProductDetailComponent implements OnInit {
   product?: Product

@@ -16,22 +16,21 @@ import { ToastModule } from "primeng/toast"
 import { MessageService } from "primeng/api"
 
 @Component({
-  selector: "app-product-form",
-  standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    CardModule,
-    InputTextModule,
-    InputTextareaModule,
-    InputNumberModule,
-    DropdownModule,
-    InputSwitchModule,
-    ButtonModule,
-    ToastModule,
-  ],
-  providers: [MessageService],
-  template: `
+    selector: "app-product-form",
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        CardModule,
+        InputTextModule,
+        InputTextareaModule,
+        InputNumberModule,
+        DropdownModule,
+        InputSwitchModule,
+        ButtonModule,
+        ToastModule,
+    ],
+    providers: [MessageService],
+    template: `
     <div class="max-w-4xl mx-auto">
       <p-card>
         <ng-template pTemplate="header">
@@ -203,7 +202,7 @@ import { MessageService } from "primeng/api"
     </div>
 
     <p-toast></p-toast>
-  `,
+  `
 })
 export class ProductFormComponent implements OnInit {
   productForm: FormGroup

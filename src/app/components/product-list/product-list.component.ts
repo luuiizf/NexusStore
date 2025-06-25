@@ -17,21 +17,20 @@ import { InputTextModule } from "primeng/inputtext"
 import { ConfirmationService, MessageService } from "primeng/api"
 
 @Component({
-  selector: "app-product-list",
-  standalone: true,
-  imports: [
-    CommonModule,
-    TableModule,
-    ButtonModule,
-    TagModule,
-    ConfirmDialogModule,
-    ToastModule,
-    ToolbarModule,
-    CardModule,
-    InputTextModule,
-  ],
-  providers: [ConfirmationService, MessageService],
-  template: `
+    selector: "app-product-list",
+    imports: [
+        CommonModule,
+        TableModule,
+        ButtonModule,
+        TagModule,
+        ConfirmDialogModule,
+        ToastModule,
+        ToolbarModule,
+        CardModule,
+        InputTextModule,
+    ],
+    providers: [ConfirmationService, MessageService],
+    template: `
     <div class="space-y-6">
       <p-card>
         <ng-template pTemplate="header">
@@ -184,7 +183,7 @@ import { ConfirmationService, MessageService } from "primeng/api"
 
     <p-confirmDialog></p-confirmDialog>
     <p-toast></p-toast>
-  `,
+  `
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = []

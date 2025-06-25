@@ -5,10 +5,9 @@ import { ButtonModule } from "primeng/button"
 import { CommonModule } from "@angular/common"
 
 @Component({
-  selector: "app-header",
-  standalone: true,
-  imports: [CommonModule, ToolbarModule, ButtonModule],
-  template: `
+    selector: "app-header",
+    imports: [CommonModule, ToolbarModule, ButtonModule],
+    template: `
     <p-toolbar class="border-b-2 border-primary-100">
       <div class="p-toolbar-group-start">
         <h1 class="text-2xl font-bold text-primary-700 cursor-pointer" 
@@ -32,7 +31,7 @@ import { CommonModule } from "@angular/common"
         </p-button>
       </div>
     </p-toolbar>
-  `,
+  `
 })
 export class HeaderComponent {
   constructor(private router: Router) {}
