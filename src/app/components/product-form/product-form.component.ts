@@ -46,35 +46,28 @@ import { MessageService } from "primeng/api"
             class="mb-6 hover:bg-gray-100 transition-colors duration-200 rounded-xl">
             <i class="pi pi-arrow-left mr-2"></i>
           </p-button>
-          
-          <div class="bg-white rounded-3xl p-8 shadow-xl border border-gray-100">
-            <div class="flex items-center space-x-6">
-              <div class="relative">
-                <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl blur opacity-75"></div>
-                <div class="relative p-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl shadow-lg">
-                  <i [class]="isEditMode ? 'pi pi-pencil' : 'pi pi-plus'" class="text-white text-3xl"></i>
-                </div>
-              </div>
-              <div>
-                <h1 class="text-4xl font-bold text-gray-800 mb-2">
-                  {{ isEditMode ? 'Editar Produto' : 'Novo Produto' }}
-                </h1>
-                <p class="text-gray-600 text-lg">
-                  {{ isEditMode ? 'Atualize as informações do produto' : 'Adicione um novo produto ao catálogo' }}
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
 
         <!-- Form Section -->
         <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
           <!-- Form Header -->
           <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-8">
-            <h2 class="text-2xl font-bold flex items-center">
-              <i class="pi pi-cog mr-3 text-3xl"></i>
-              Informações do Produto
-            </h2>
+            <div class="flex items-center space-x-4 mb-2">
+              <div class="relative">
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl blur opacity-75"></div>
+                <div class="relative p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl shadow-lg">
+                  <i [class]="isEditMode ? 'pi pi-pencil' : 'pi pi-plus'" class="text-white text-2xl"></i>
+                </div>
+              </div>
+              <div>
+                <h1 class="text-xl font-bold text-white">
+                  {{ isEditMode ? 'Editar Produto' : 'Novo Produto' }}
+                </h1>
+                <p class="text-blue-100 mt-1 text-base">
+                  {{ isEditMode ? 'Atualize as informações do produto' : 'Adicione um novo produto ao catálogo' }}
+                </p>
+              </div>
+            </div>
             <p class="text-blue-100 mt-2 text-lg">Preencha todos os campos obrigatórios</p>
           </div>
 
@@ -284,7 +277,7 @@ import { MessageService } from "primeng/api"
                   severity="secondary"
                   [outlined]="true"
                   (onClick)="onCancel()"
-                  class="w-full sm:w-auto px-8 py-4 text-lg font-semibold rounded-xl hover:bg-gray-50 transition-all duration-300">
+                  class="w-full sm:w-auto px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300">
                   <i class="pi pi-times mr-2"></i>
                 </p-button>
                 
@@ -293,7 +286,7 @@ import { MessageService } from "primeng/api"
                   type="submit"
                   [disabled]="productForm.invalid || isSubmitting"
                   [loading]="isSubmitting"
-                  class="w-full sm:w-auto px-8 py-4 text-lg font-semibold bg-gradient-to-r from-blue-500 to-purple-600 text-white border-0 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
+                  class="w-full sm:w-auto px-8 py-4 text-lg font-semibold text-white border-0 hover:scale-105 transition-all duration-300">
                   <i [class]="isEditMode ? 'pi pi-check' : 'pi pi-plus'" class="mr-2" *ngIf="!isSubmitting"></i>
                 </p-button>
               </div>

@@ -109,7 +109,12 @@ import { ConfirmationService, MessageService } from "primeng/api"
             </div>
 
             <p-floatlabel variant="on">
-              <input pInputText id="buscar-produtos" [(ngModel)]="searchValue" autocomplete="off" />
+              <input 
+                pInputText 
+                id="buscar-produtos" 
+                [(ngModel)]="searchValue" 
+                autocomplete="off"
+                (input)="onGlobalFilter($event, dt)" />
               <label for="buscar-produtos">Buscar produtos</label>
             </p-floatlabel>
           </div>
@@ -365,8 +370,9 @@ export class ProductListComponent implements OnInit {
     })
   }
 
-  onGlobalFilter(event: any) {
-    // Implementação do filtro global será feita pelo PrimeNG Table
+  onGlobalFilter(event: Event, table: any) {
+    const input = event.target as HTMLInputElement;
+    table.filterGlobal(input.value, 'contains');
   }
 
   getActiveProductsCount(): number {

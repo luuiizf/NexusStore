@@ -17,7 +17,7 @@ bootstrapApplication(AppComponent, {
         preset: Material,
         options: {
           prefix: "p",
-          darkModeSelector: "light", // força sempre o modo claro
+          darkModeSelector: "light",
           cssLayer: false,
         },
       },

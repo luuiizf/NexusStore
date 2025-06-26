@@ -51,7 +51,7 @@ import { CommonModule } from "@angular/common"
                 severity="primary"
                 icon="pi pi-plus"
                 (onClick)="navigateToNewProduct()"
-                class="bg-gradient-to-r from-blue-500 to-purple-600 text-white border-0 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 rounded-xl px-6 py-3">
+                class="text-white  hover:scale-105 transition-all duration-300 rounded-xl px-6 py-3">
               </p-button>
             </div>
           </div>
