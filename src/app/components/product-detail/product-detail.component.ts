@@ -14,6 +14,22 @@ import { ConfirmDialogModule } from "primeng/confirmdialog"
 import { SkeletonModule } from "primeng/skeleton"
 import { MessageService, ConfirmationService } from "primeng/api"
 
+
+import { NgIconComponent, provideIcons } from '@ng-icons/core'
+import { 
+  heroArrowLeft,
+  heroPencil,
+  heroTrash,
+  heroCog,
+  heroEye,
+  heroCalendarDays,
+  heroCheckCircle,
+  heroXCircle,
+  heroSparkles,
+  heroCurrencyDollar,
+  heroArchiveBox
+} from '@ng-icons/heroicons/outline'
+
 @Component({
   standalone: true,
   selector: "app-product-detail",

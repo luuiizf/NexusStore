@@ -18,6 +18,16 @@ import { SkeletonModule } from "primeng/skeleton"
 import { TooltipModule } from "primeng/tooltip"
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ConfirmationService, MessageService } from "primeng/api"
+import { NgIconComponent, provideIcons } from '@ng-icons/core'
+import { 
+  heroPlus, 
+  heroMagnifyingGlass,
+  heroEye,
+  heroPencil,
+  heroTrash,
+  heroInboxArrowDown,
+  heroSparkles
+} from '@ng-icons/heroicons/outline'
 
 @Component({
   standalone: true,

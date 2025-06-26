@@ -16,6 +16,17 @@ import { DividerModule } from "primeng/divider"
 import { ProgressSpinnerModule } from "primeng/progressspinner"
 import { MessageService } from "primeng/api"
 
+import { NgIconComponent, provideIcons } from '@ng-icons/core'
+import { 
+  heroPlus, 
+  heroCheck,
+  heroXMark,
+  heroArrowLeft,
+  heroPencil,
+  heroPhoto,
+  heroSparkles
+} from '@ng-icons/heroicons/outline'
+
 @Component({
   standalone: true,
   selector: "app-product-form",
