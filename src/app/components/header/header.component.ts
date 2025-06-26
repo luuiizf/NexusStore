@@ -9,7 +9,7 @@ import { CommonModule } from "@angular/common"
   selector: "app-header",
   imports: [CommonModule, ToolbarModule, ButtonModule],
   template: `
-    <div class="fixed top-0 left-0 w-full z-[9999] bg-white border-b border-gray-200 shadow-md">
+    <div class="fixed top-0 left-0 w-full z-[9999] bg-transparent">
       <div class="container mx-auto px-4">
         <p-toolbar class="border-0 bg-white shadow-none py-4">
           <div class="p-toolbar-group-start">
