@@ -16,7 +16,7 @@ import { InputTextModule } from "primeng/inputtext"
 import { FormsModule } from "@angular/forms"
 import { SkeletonModule } from "primeng/skeleton"
 import { TooltipModule } from "primeng/tooltip"
-
+import { FloatLabelModule } from 'primeng/floatlabel';
 import { ConfirmationService, MessageService } from "primeng/api"
 
 @Component({
@@ -35,7 +35,9 @@ import { ConfirmationService, MessageService } from "primeng/api"
     FormsModule,
     SkeletonModule,
     TooltipModule,
+    FloatLabelModule,
   ],
+
   providers: [ConfirmationService, MessageService],
   template: `
     <div class="animate-fade-in">
@@ -71,20 +73,8 @@ import { ConfirmationService, MessageService } from "primeng/api"
                   <p class="text-sm font-medium text-gray-600">Produtos Ativos</p>
                   <p class="text-2xl font-bold text-green-600">{{ getActiveProductsCount() }}</p>
                 </div>
-                <div class="p-3 bg-green-100 rounded-lg">
+                <div class="p-3 bg-green-100 rounded-lg ml-[10px]">
                   <i class="pi pi-check-circle text-green-600 text-xl"></i>
-                </div>
-              </div>
-            </div>
-            
-            <div class="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-gray-100">
-              <div class="flex items-center justify-between">
-                <div>
-                  <p class="text-sm font-medium text-gray-600">Valor Total</p>
-                  <p class="text-2xl font-bold text-purple-600">{{ getTotalValue() | currency:'BRL':'symbol':'1.0-0':'pt-BR' }}</p>
-                </div>
-                <div class="p-3 bg-purple-100 rounded-lg">
-                  <i class="pi pi-dollar text-purple-600 text-xl"></i>
                 </div>
               </div>
             </div>
@@ -112,20 +102,18 @@ import { ConfirmationService, MessageService } from "primeng/api"
             </p-button>
           </div>
           
-          <div class="p-toolbar-group-end">
-            <div class="relative">
-              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <i class="pi pi-search text-gray-400"></i>
-              </div>
-              <input 
-                pInputText 
-                type="text" 
-                placeholder="Buscar produtos..."
-                [(ngModel)]="searchValue"
-                (input)="onGlobalFilter($event)"
-                class="pl-10 pr-4 py-2 w-64 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300">
+         <div class="p-toolbar-group-end">
+          <div class="relative w-64">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i class="pi pi-search text-gray-400"></i>
             </div>
+
+            <p-floatlabel variant="on">
+              <input pInputText id="buscar-produtos" [(ngModel)]="searchValue" autocomplete="off" />
+              <label for="buscar-produtos">Buscar produtos</label>
+            </p-floatlabel>
           </div>
+        </div>
         </p-toolbar>
 
         <p-table 
