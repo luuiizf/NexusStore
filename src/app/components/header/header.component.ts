@@ -3,14 +3,6 @@ import { Router } from "@angular/router"
 import { ToolbarModule } from "primeng/toolbar"
 import { ButtonModule } from "primeng/button"
 import { CommonModule } from "@angular/common"
-import { NgIconComponent, provideIcons } from '@ng-icons/core'
-import { 
-  heroShoppingBag, 
-  heroPlus, 
-  heroListBullet,
-  heroSparkles,
-  heroHome
-} from '@ng-icons/heroicons/outline'
 
  @Component({
   standalone: true,
