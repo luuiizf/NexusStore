@@ -107,8 +107,8 @@ import { ConfirmationService, MessageService } from "primeng/api"
               label="Novo Produto" 
               severity="primary"
               (onClick)="navigateToNew()"
+              icon="pi pi-plus"
               class="gradient-primary text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-              <i class="pi pi-plus mr-2"></i>
             </p-button>
           </div>
           
@@ -235,36 +235,39 @@ import { ConfirmationService, MessageService } from "primeng/api"
               </td>
               <td>
                 <div class="flex justify-center space-x-2">
-                  <p-button 
-                    [text]="true"
-                    [rounded]="true"
-                    severity="info"
-                    pTooltip="Visualizar"
-                    tooltipPosition="top"
-                    (onClick)="viewProduct(product.id)"
-                    class="hover:bg-blue-50 transition-colors duration-200">
-                    <i class="pi pi-eye text-blue-600"></i>
-                  </p-button>
-                  <p-button 
-                    [text]="true"
-                    [rounded]="true"
-                    severity="warn"
-                    pTooltip="Editar"
-                    tooltipPosition="top"
-                    (onClick)="editProduct(product.id)"
-                    class="hover:bg-yellow-50 transition-colors duration-200">
-                    <i class="pi pi-pencil text-yellow-600"></i>
-                  </p-button>
-                  <p-button 
-                    [text]="true"
-                    [rounded]="true"
-                    severity="danger"
-                    pTooltip="Excluir"
-                    tooltipPosition="top"
-                    (onClick)="deleteProduct(product)"
-                    class="hover:bg-red-50 transition-colors duration-200">
-                    <i class="pi pi-trash text-red-600"></i>
-                  </p-button>
+                <p-button 
+                  [text]="true"
+                  [rounded]="true"
+                  severity="info"
+                  pTooltip="Visualizar"
+                  tooltipPosition="top"
+                  (onClick)="viewProduct(product.id)"
+                  icon="pi pi-search"
+                  class="hover:bg-blue-50 transition-colors duration-200">
+                </p-button>
+
+
+                <p-button 
+                  [text]="true"
+                  [rounded]="true"
+                  severity="warn"
+                  pTooltip="Editar"
+                  tooltipPosition="top"
+                  (onClick)="editProduct(product.id)"
+                  icon="pi pi-pencil"
+                  class="hover:bg-yellow-50 transition-colors duration-200">
+                </p-button>
+
+                <p-button 
+                  [text]="true"
+                  [rounded]="true"
+                  severity="danger"
+                  pTooltip="Excluir"
+                  tooltipPosition="top"
+                  (onClick)="deleteProduct(product)"
+                  icon="pi pi-trash"
+                  class="hover:bg-red-50 transition-colors duration-200">
+                </p-button>
                 </div>
               </td>
             </tr>
@@ -279,12 +282,12 @@ import { ConfirmationService, MessageService } from "primeng/api"
                   </div>
                   <p class="text-xl font-medium mb-2">Nenhum produto encontrado</p>
                   <p class="text-sm text-gray-400 mb-6">Comece adicionando seu primeiro produto ao catálogo</p>
-                  <p-button 
+                 <p-button 
                     label="Adicionar Produto" 
                     severity="primary"
                     (onClick)="navigateToNew()"
+                    icon="pi pi-plus"
                     class="gradient-primary text-white border-0">
-                    <i class="pi pi-plus mr-2"></i>
                   </p-button>
                 </div>
               </td>
