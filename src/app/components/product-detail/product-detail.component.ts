@@ -11,158 +11,324 @@ import { TagModule } from "primeng/tag"
 import { DividerModule } from "primeng/divider"
 import { ToastModule } from "primeng/toast"
 import { ConfirmDialogModule } from "primeng/confirmdialog"
+import { SkeletonModule } from "primeng/skeleton"
 import { MessageService, ConfirmationService } from "primeng/api"
 
+
+import { NgIconComponent, provideIcons } from '@ng-icons/core'
+import { 
+  heroArrowLeft,
+  heroPencil,
+  heroTrash,
+  heroCog,
+  heroEye,
+  heroCalendarDays,
+  heroCheckCircle,
+  heroXCircle,
+  heroSparkles,
+  heroCurrencyDollar,
+  heroArchiveBox
+} from '@ng-icons/heroicons/outline'
+
 @Component({
-    selector: "app-product-detail",
-    imports: [CommonModule, CardModule, ButtonModule, TagModule, DividerModule, ToastModule, ConfirmDialogModule],
-    providers: [MessageService, ConfirmationService],
-    template: `
-    <div class="max-w-4xl mx-auto" *ngIf="product">
-      <div class="mb-4">
+  selector: "app-product-detail",
+  imports: [
+    CommonModule, 
+    CardModule, 
+    ButtonModule, 
+    TagModule, 
+    DividerModule, 
+    ToastModule, 
+    ConfirmDialogModule,
+    SkeletonModule,
+    NgIconComponent
+  ],
+  providers: [
+    MessageService, 
+    ConfirmationService,
+    provideIcons({ 
+      heroArrowLeft,
+      heroPencil,
+      heroTrash,
+      heroCog,
+      heroEye,
+      heroCalendarDays,
+      heroCheckCircle,
+      heroXCircle,
+      heroSparkles,
+      heroCurrencyDollar,
+      heroArchiveBox
+    })
+  ],
+  template: `
+    <div class="animate-fade-in max-w-6xl mx-auto" *ngIf="product">
+      <!-- Header Section -->
+      <div class="mb-8">
         <p-button 
           label="Voltar" 
-          icon="pi pi-arrow-left" 
+          severity="secondary"
           [text]="true"
-          (onClick)="goBack()">
+          (onClick)="goBack()"
+          class="mb-4 hover:bg-gray-100 transition-colors duration-200">
+          <ng-icon name="heroArrowLeft" class="mr-2"></ng-icon>
         </p-button>
-      </div>
-
-      <p-card>
-        <ng-template pTemplate="header">
-          <div class="p-4 border-b">
-            <div class="flex justify-between items-start">
+        
+        <div class="bg-gradient-to-br from-blue-50 via-white to-purple-50 rounded-2xl p-8 border border-gray-100">
+          <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-4 lg:space-y-0">
+            <div class="flex items-center space-x-4">
+              <div class="p-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl">
+                <ng-icon name="heroEye" class="text-white text-2xl"></ng-icon>
+              </div>
               <div>
                 <h1 class="text-3xl font-bold text-gray-800">{{ product.nome }}</h1>
-                <p class="text-gray-600 mt-1">ID: {{ product.id }}</p>
-              </div>
-              <div class="flex space-x-2">
-                <p-button 
-                  label="Editar" 
-                  icon="pi pi-pencil" 
-                  severity="warning"
-                  (onClick)="editProduct()">
-                </p-button>
-                <p-button 
-                  label="Excluir" 
-                  icon="pi pi-trash" 
-                  severity="danger"
-                  (onClick)="deleteProduct()">
-                </p-button>
+                <p class="text-gray-600 mt-1">ID: #{{ product.id.toString().padStart(4, '0') }}</p>
               </div>
             </div>
-          </div>
-        </ng-template>
-
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <!-- Imagem do Produto -->
-          <div class="space-y-4">
-            <img 
-              [src]="product.imagemUrl || '/placeholder.svg?height=400&width=400'" 
-              [alt]="product.nome"
-              class="w-full h-96 object-cover rounded-lg shadow-md">
             
-            <div class="flex justify-center space-x-4">
-              <p-tag 
-                [value]="product.ativo ? 'Ativo' : 'Inativo'" 
-                [severity]="product.ativo ? 'success' : 'danger'"
-                class="text-lg">
-              </p-tag>
-              <p-tag 
-                [value]="product.categoria" 
-                [severity]="getCategorySeverity(product.categoria)"
-                class="text-lg">
-              </p-tag>
-            </div>
-          </div>
-
-          <!-- Informações do Produto -->
-          <div class="space-y-6">
-            <div>
-              <h3 class="text-lg font-semibold text-gray-700 mb-2">Descrição</h3>
-              <p class="text-gray-600 leading-relaxed">{{ product.descricao }}</p>
-            </div>
-
-            <p-divider></p-divider>
-
-            <div class="grid grid-cols-2 gap-4">
-              <div class="bg-green-50 p-4 rounded-lg">
-                <h4 class="text-sm font-medium text-green-800 mb-1">Preço</h4>
-                <p class="text-2xl font-bold text-green-600">
-                  {{ product.preco | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
-                </p>
-              </div>
-
-              <div class="bg-blue-50 p-4 rounded-lg">
-                <h4 class="text-sm font-medium text-blue-800 mb-1">Estoque</h4>
-                <p class="text-2xl font-bold text-blue-600">
-                  {{ product.estoque }} unidades
-                </p>
-              </div>
-            </div>
-
-            <p-divider></p-divider>
-
-            <div class="space-y-3">
-              <h3 class="text-lg font-semibold text-gray-700">Informações Adicionais</h3>
-              
-              <div class="grid grid-cols-1 gap-3 text-sm">
-                <div class="flex justify-between py-2 border-b border-gray-100">
-                  <span class="font-medium text-gray-600">Data de Criação:</span>
-                  <span class="text-gray-800">{{ product.dataCriacao | date:'dd/MM/yyyy' }}</span>
-                </div>
-                
-                <div class="flex justify-between py-2 border-b border-gray-100">
-                  <span class="font-medium text-gray-600">Status:</span>
-                  <span [class]="product.ativo ? 'text-green-600' : 'text-red-600'">
-                    {{ product.ativo ? 'Produto Ativo' : 'Produto Inativo' }}
-                  </span>
-                </div>
-                
-                <div class="flex justify-between py-2 border-b border-gray-100">
-                  <span class="font-medium text-gray-600">Disponibilidade:</span>
-                  <span [class]="product.estoque > 0 ? 'text-green-600' : 'text-red-600'">
-                    {{ product.estoque > 0 ? 'Em Estoque' : 'Fora de Estoque' }}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <p-divider></p-divider>
-
-            <div class="flex space-x-4">
+            <div class="flex flex-wrap gap-3">
               <p-button 
-                label="Editar Produto" 
-                icon="pi pi-pencil" 
-                class="flex-1"
-                (onClick)="editProduct()">
+                label="Editar" 
+                severity="help"
+                (onClick)="editProduct()"
+                class="shadow-lg hover:shadow-xl transition-all duration-300">
+                <ng-icon name="heroPencil" class="mr-2"></ng-icon>
               </p-button>
               <p-button 
                 label="Duplicar" 
-                icon="pi pi-copy" 
                 severity="secondary"
                 [outlined]="true"
-                class="flex-1"
-                (onClick)="duplicateProduct()">
+                (onClick)="duplicateProduct()"
+                class="shadow-lg hover:shadow-xl transition-all duration-300">
+                <ng-icon name="heroCog" class="mr-2"></ng-icon>
+              </p-button>
+              <p-button 
+                label="Excluir" 
+                severity="danger"
+                (onClick)="deleteProduct()"
+                class="shadow-lg hover:shadow-xl transition-all duration-300">
+                <ng-icon name="heroTrash" class="mr-2"></ng-icon>
               </p-button>
             </div>
           </div>
         </div>
-      </p-card>
+      </div>
+
+      <!-- Main Content -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Product Image and Quick Info -->
+        <div class="lg:col-span-1 space-y-6">
+          <!-- Image Card -->
+          <p-card class="animate-slide-up">
+            <ng-template pTemplate="header">
+              <div class="gradient-primary text-white p-4">
+                <h3 class="text-lg font-semibold flex items-center">
+                  <ng-icon name="heroSparkles" class="mr-2"></ng-icon>
+                  Imagem do Produto
+                </h3>
+              </div>
+            </ng-template>
+            
+            <div class="text-center">
+              <div class="relative inline-block">
+                <img 
+                  [src]="product.imagemUrl || '/placeholder.svg?height=300&width=300'" 
+                  [alt]="product.nome"
+                  class="w-full max-w-sm h-64 object-cover rounded-xl shadow-lg border-4 border-white">
+                <div class="absolute -top-2 -right-2 w-8 h-8 rounded-full border-4 border-white shadow-lg"
+                     [class]="product.ativo ? 'bg-green-500' : 'bg-red-500'"></div>
+              </div>
+              
+              <div class="flex justify-center space-x-3 mt-6">
+                <p-tag 
+                  [value]="product.ativo ? 'Ativo' : 'Inativo'" 
+                  [severity]="product.ativo ? 'success' : 'danger'"
+                  class="text-base font-semibold px-4 py-2">
+                  <ng-icon [name]="product.ativo ? 'heroCheckCircle' : 'heroXCircle'" class="mr-2"></ng-icon>
+                </p-tag>
+                <p-tag 
+                  [value]="product.categoria" 
+                  [severity]="getCategorySeverity(product.categoria)"
+                  class="text-base font-semibold px-4 py-2">
+                </p-tag>
+              </div>
+            </div>
+          </p-card>
+
+          <!-- Quick Stats -->
+          <p-card class="animate-slide-up">
+            <ng-template pTemplate="header">
+              <div class="gradient-secondary text-gray-800 p-4">
+                <h3 class="text-lg font-semibold">Estatísticas Rápidas</h3>
+              </div>
+            </ng-template>
+            
+            <div class="space-y-4">
+              <div class="flex items-center justify-between p-3 bg-green-50 rounded-xl">
+                <div class="flex items-center space-x-3">
+                  <div class="p-2 bg-green-100 rounded-lg">
+                    <ng-icon name="heroCurrencyDollar" class="text-green-600"></ng-icon>
+                  </div>
+                  <span class="font-medium text-gray-700">Preço</span>
+                </div>
+                <span class="text-xl font-bold text-green-600">
+                  {{ product.preco | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+                </span>
+              </div>
+
+              <div class="flex items-center justify-between p-3 bg-blue-50 rounded-xl">
+                <div class="flex items-center space-x-3">
+                  <div class="p-2 bg-blue-100 rounded-lg">
+                    <ng-icon name="heroArchiveBox" class="text-blue-600"></ng-icon>
+                  </div>
+                  <span class="font-medium text-gray-700">Estoque</span>
+                </div>
+                <span class="text-xl font-bold text-blue-600">
+                  {{ product.estoque }} un.
+                </span>
+              </div>
+
+              <div class="flex items-center justify-between p-3 bg-purple-50 rounded-xl">
+                <div class="flex items-center space-x-3">
+                  <div class="p-2 bg-purple-100 rounded-lg">
+                    <ng-icon name="heroCalendarDays" class="text-purple-600"></ng-icon>
+                  </div>
+                  <span class="font-medium text-gray-700">Criado em</span>
+                </div>
+                <span class="text-sm font-medium text-purple-600">
+                  {{ product.dataCriacao | date:'dd/MM/yyyy' }}
+                </span>
+              </div>
+            </div>
+          </p-card>
+        </div>
+
+        <!-- Product Details -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- Description Card -->
+          <p-card class="animate-slide-up">
+            <ng-template pTemplate="header">
+              <div class="gradient-primary text-white p-4">
+                <h3 class="text-lg font-semibold">Descrição do Produto</h3>
+              </div>
+            </ng-template>
+            
+            <div class="prose max-w-none">
+              <p class="text-gray-700 leading-relaxed text-lg">{{ product.descricao }}</p>
+            </div>
+          </p-card>
+
+          <!-- Detailed Information -->
+          <p-card class="animate-slide-up">
+            <ng-template pTemplate="header">
+              <div class="gradient-secondary text-gray-800 p-4">
+                <h3 class="text-lg font-semibold">Informações Detalhadas</h3>
+              </div>
+            </ng-template>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="space-y-4">
+                <div class="border-l-4 border-blue-500 pl-4">
+                  <h4 class="font-semibold text-gray-800 mb-1">Identificação</h4>
+                  <p class="text-gray-600">ID: #{{ product.id.toString().padStart(4, '0') }}</p>
+                  <p class="text-gray-600">Nome: {{ product.nome }}</p>
+                </div>
+
+                <div class="border-l-4 border-green-500 pl-4">
+                  <h4 class="font-semibold text-gray-800 mb-1">Categoria</h4>
+                  <p class="text-gray-600">{{ product.categoria }}</p>
+                </div>
+
+                <div class="border-l-4 border-purple-500 pl-4">
+                  <h4 class="font-semibold text-gray-800 mb-1">Data de Criação</h4>
+                  <p class="text-gray-600">{{ product.dataCriacao | date:'dd/MM/yyyy HH:mm' }}</p>
+                </div>
+              </div>
+
+              <div class="space-y-4">
+                <div class="border-l-4 border-yellow-500 pl-4">
+                  <h4 class="font-semibold text-gray-800 mb-1">Status</h4>
+                  <p [class]="product.ativo ? 'text-green-600' : 'text-red-600'" class="font-medium">
+                    {{ product.ativo ? 'Produto Ativo' : 'Produto Inativo' }}
+                  </p>
+                  <p class="text-gray-600 text-sm">
+                    {{ product.ativo ? 'Visível na loja' : 'Oculto na loja' }}
+                  </p>
+                </div>
+
+                <div class="border-l-4 border-red-500 pl-4">
+                  <h4 class="font-semibold text-gray-800 mb-1">Disponibilidade</h4>
+                  <p [class]="product.estoque > 0 ? 'text-green-600' : 'text-red-600'" class="font-medium">
+                    {{ product.estoque > 0 ? 'Em Estoque' : 'Fora de Estoque' }}
+                  </p>
+                  <p class="text-gray-600 text-sm">
+                    {{ product.estoque }} unidades disponíveis
+                  </p>
+                </div>
+
+                <div class="border-l-4 border-indigo-500 pl-4">
+                  <h4 class="font-semibold text-gray-800 mb-1">Valor Total</h4>
+                  <p class="text-indigo-600 font-bold text-lg">
+                    {{ (product.preco * product.estoque) | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+                  </p>
+                  <p class="text-gray-600 text-sm">
+                    Valor total em estoque
+                  </p>
+                </div>
+              </div>
+            </div>
+          </p-card>
+
+          <!-- Action Buttons -->
+          <p-card class="animate-slide-up">
+            <div class="flex flex-col sm:flex-row gap-4">
+              <p-button 
+                label="Editar Produto" 
+                severity="help"
+                class="flex-1 shadow-lg hover:shadow-xl transition-all duration-300"
+                (onClick)="editProduct()">
+                <ng-icon name="heroPencil" class="mr-2"></ng-icon>
+              </p-button>
+              
+              <p-button 
+                label="Duplicar Produto" 
+                severity="secondary"
+                [outlined]="true"
+                class="flex-1 shadow-lg hover:shadow-xl transition-all duration-300"
+                (onClick)="duplicateProduct()">
+                <ng-icon name="heroCopy" class="mr-2"></ng-icon>
+              </p-button>
+              
+              <p-button 
+                label="Excluir Produto" 
+                severity="danger"
+                class="flex-1 shadow-lg hover:shadow-xl transition-all duration-300"
+                (onClick)="deleteProduct()">
+                <ng-icon name="heroTrash" class="mr-2"></ng-icon>
+              </p-button>
+            </div>
+          </p-card>
+        </div>
+      </div>
     </div>
 
     <!-- Loading State -->
-    <div *ngIf="!product" class="max-w-4xl mx-auto">
+    <div *ngIf="!product" class="max-w-6xl mx-auto animate-fade-in">
       <p-card>
-        <div class="text-center py-8">
-          <i class="pi pi-spin pi-spinner text-4xl text-gray-400 mb-4"></i>
-          <p class="text-gray-600">Carregando produto...</p>
+        <div class="text-center py-12">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p class="text-gray-600 text-lg">Carregando produto...</p>
         </div>
       </p-card>
     </div>
 
-    <p-confirmDialog></p-confirmDialog>
-    <p-toast></p-toast>
+    <p-confirmDialog 
+      [style]="{width: '450px'}"
+      [baseZIndex]="10000"
+      rejectButtonStyleClass="p-button-text p-button-secondary"
+      acceptButtonStyleClass="p-button-danger">
+    </p-confirmDialog>
+    
+    <p-toast position="top-right"></p-toast>
   `
 })
 export class ProductDetailComponent implements OnInit {
@@ -186,18 +352,22 @@ export class ProductDetailComponent implements OnInit {
 
   loadProduct() {
     if (this.productId) {
-      this.productService.getProduct(this.productId).subscribe((product) => {
-        if (product) {
-          this.product = product
-        } else {
-          this.messageService.add({
-            severity: "error",
-            summary: "Erro",
-            detail: "Produto não encontrado",
-          })
-          this.router.navigate(["/produtos"])
-        }
-      })
+      // Simular loading
+      setTimeout(() => {
+        this.productService.getProduct(this.productId!).subscribe((product) => {
+          if (product) {
+            this.product = product
+          } else {
+            this.messageService.add({
+              severity: "error",
+              summary: "Erro",
+              detail: "Produto não encontrado",
+              life: 5000
+            })
+            this.router.navigate(["/produtos"])
+          }
+        })
+      }, 500)
     }
   }
 
@@ -212,16 +382,17 @@ export class ProductDetailComponent implements OnInit {
       message: `Tem certeza que deseja excluir o produto "${this.product.nome}"?`,
       header: "Confirmar Exclusão",
       icon: "pi pi-exclamation-triangle",
-      acceptLabel: "Sim",
-      rejectLabel: "Não",
+      acceptLabel: "Sim, excluir",
+      rejectLabel: "Cancelar",
       accept: () => {
         if (this.productId) {
           this.productService.deleteProduct(this.productId).subscribe((success) => {
             if (success) {
               this.messageService.add({
                 severity: "success",
-                summary: "Sucesso",
+                summary: "Sucesso!",
                 detail: "Produto excluído com sucesso",
+                life: 3000
               })
               setTimeout(() => this.router.navigate(["/produtos"]), 1500)
             }
@@ -247,8 +418,9 @@ export class ProductDetailComponent implements OnInit {
     this.productService.createProduct(duplicatedProduct).subscribe((newProduct) => {
       this.messageService.add({
         severity: "success",
-        summary: "Sucesso",
+        summary: "Sucesso!",
         detail: "Produto duplicado com sucesso",
+        life: 3000
       })
       setTimeout(() => this.router.navigate(["/produtos/editar", newProduct.id]), 1500)
     })
@@ -268,6 +440,12 @@ export class ProductDetailComponent implements OnInit {
         return "warning"
       case "áudio":
         return "success"
+      case "casa e jardim":
+        return "secondary"
+      case "esportes":
+        return "contrast"
+      case "moda":
+        return "danger"
       default:
         return "secondary"
     }

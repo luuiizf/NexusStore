@@ -9,13 +9,13 @@ export class ProductService {
   private products: Product[] = [
     {
       id: 1,
-      nome: "Smartphone Galaxy Pro",
-      descricao: "Smartphone premium com câmera de 108MP e 256GB de armazenamento",
-      preco: 2499.99,
+      nome: "Iphone 13 Pro",
+      descricao: "Celular bom demais",
+      preco: 3999.99,
       categoria: "Eletrônicos",
       ativo: true,
       estoque: 15,
-      imagemUrl: "/placeholder.svg?height=300&width=300",
+      imagemUrl: "https://th.bing.com/th/id/R.5594d870cce59de97efe9b52e63ca0b2?rik=B%2f%2fnQBe5LeNUbg&pid=ImgRaw&r=0",
       dataCriacao: new Date("2024-01-15"),
     },
     {
