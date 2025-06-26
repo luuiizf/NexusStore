@@ -14,55 +14,141 @@ import { ToolbarModule } from "primeng/toolbar"
 import { CardModule } from "primeng/card"
 import { InputTextModule } from "primeng/inputtext"
 import { FormsModule } from "@angular/forms"
+import { SkeletonModule } from "primeng/skeleton"
+import { RippleModule } from "primeng/ripple"
 
 import { ConfirmationService, MessageService } from "primeng/api"
+import { NgIconComponent, provideIcons } from '@ng-icons/core'
+import { 
+  heroPlus, 
+  heroMagnifyingGlass,
+  heroEye,
+  heroPencil,
+  heroTrash,
+  heroInboxArrowDown,
+  heroSparkles
+} from '@ng-icons/heroicons/outline'
 
 @Component({
-    imports: [
-        CommonModule,
-        TableModule,
-        ButtonModule,
-        TagModule,
-        ConfirmDialogModule,
-        ToastModule,
-        ToolbarModule,
-        CardModule,
-        InputTextModule,
-        FormsModule,
-    ],
-    
-    providers: [ConfirmationService, MessageService],
-    template: `
-    <div class="space-y-6">
-      <p-card>
+  imports: [
+    CommonModule,
+    TableModule,
+    ButtonModule,
+    TagModule,
+    ConfirmDialogModule,
+    ToastModule,
+    ToolbarModule,
+    CardModule,
+    InputTextModule,
+    FormsModule,
+    SkeletonModule,
+    RippleModule,
+    NgIconComponent
+  ],
+  providers: [
+    ConfirmationService, 
+    MessageService,
+    provideIcons({ 
+      heroPlus, 
+      heroMagnifyingGlass,
+      heroEye,
+      heroPencil,
+      heroTrash,
+      heroInboxArrowDown,
+      heroSparkles
+    })
+  ],
+  template: `
+    <div class="animate-fade-in">
+      <!-- Hero Section -->
+      <div class="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50 rounded-2xl mb-8 p-8 border border-gray-100">
+        <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full opacity-10"></div>
+        <div class="absolute bottom-0 left-0 -mb-4 -ml-4 w-32 h-32 bg-gradient-to-tr from-purple-400 to-pink-500 rounded-full opacity-10"></div>
+        
+        <div class="relative">
+          <div class="flex items-center space-x-3 mb-4">
+            <div class="p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl">
+              <ng-icon name="heroSparkles" class="text-white text-2xl"></ng-icon>
+            </div>
+            <div>
+              <h1 class="text-3xl font-bold text-gray-800">Gerenciamento de Produtos</h1>
+              <p class="text-gray-600 mt-1">Gerencie seu catálogo com facilidade e eficiência</p>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+            <div class="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-gray-100">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm font-medium text-gray-600">Total de Produtos</p>
+                  <p class="text-2xl font-bold text-gray-800">{{ products.length }}</p>
+                </div>
+                <div class="p-3 bg-blue-100 rounded-lg">
+                  <ng-icon name="heroInboxArrowDown" class="text-blue-600 text-xl"></ng-icon>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-gray-100">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm font-medium text-gray-600">Produtos Ativos</p>
+                  <p class="text-2xl font-bold text-green-600">{{ getActiveProductsCount() }}</p>
+                </div>
+                <div class="p-3 bg-green-100 rounded-lg">
+                  <ng-icon name="heroSparkles" class="text-green-600 text-xl"></ng-icon>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-gray-100">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm font-medium text-gray-600">Valor Total</p>
+                  <p class="text-2xl font-bold text-purple-600">{{ getTotalValue() | currency:'BRL':'symbol':'1.0-0':'pt-BR' }}</p>
+                </div>
+                <div class="p-3 bg-purple-100 rounded-lg">
+                  <ng-icon name="heroSparkles" class="text-purple-600 text-xl"></ng-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <p-card class="animate-slide-up">
         <ng-template pTemplate="header">
-          <div class="p-4 border-b">
-            <h2 class="text-2xl font-bold text-gray-800">Gerenciamento de Produtos</h2>
-            <p class="text-gray-600 mt-1">Gerencie o catálogo de produtos da sua loja</p>
+          <div class="gradient-primary text-white p-6">
+            <h2 class="text-xl font-semibold">Catálogo de Produtos</h2>
+            <p class="text-blue-100 mt-1">Visualize e gerencie todos os seus produtos</p>
           </div>
         </ng-template>
 
-        <p-toolbar class="mb-4">
+        <p-toolbar class="mb-6 border-0 bg-gradient-to-r from-gray-50 to-white">
           <div class="p-toolbar-group-start">
             <p-button 
               label="Novo Produto" 
-              icon="pi pi-plus" 
-              class="mr-2"
-              (onClick)="navigateToNew()">
+              severity="primary"
+              (onClick)="navigateToNew()"
+              class="gradient-primary text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+              <ng-icon name="heroPlus" class="mr-2"></ng-icon>
             </p-button>
           </div>
           
           <div class="p-toolbar-group-end">
-            <span class="p-input-icon-left">
-              <i class="pi pi-search"></i>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <ng-icon name="heroMagnifyingGlass" class="text-gray-400"></ng-icon>
+              </div>
               <input 
                 pInputText 
                 type="text" 
                 placeholder="Buscar produtos..."
                 [(ngModel)]="searchValue"
                 (input)="onGlobalFilter($event)"
-                class="w-64">
-            </span>
+                class="pl-10 pr-4 py-2 w-64 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300">
+            </div>
           </div>
         </p-toolbar>
 
@@ -76,92 +162,132 @@ import { ConfirmationService, MessageService } from "primeng/api"
           [rowsPerPageOptions]="[5, 10, 20]"
           [globalFilterFields]="['nome', 'categoria', 'descricao']"
           responsiveLayout="scroll"
-          class="p-datatable-gridlines">
+          [loading]="loading"
+          class="custom-table">
           
           <ng-template pTemplate="header">
-            <tr>
-              <th pSortableColumn="id">
-                ID <p-sortIcon field="id"></p-sortIcon>
+            <tr class="bg-gradient-to-r from-gray-50 to-gray-100">
+              <th pSortableColumn="id" class="text-center">
+                <div class="flex items-center justify-center space-x-2">
+                  <span class="font-semibold">ID</span>
+                  <p-sortIcon field="id"></p-sortIcon>
+                </div>
               </th>
               <th pSortableColumn="nome">
-                Nome <p-sortIcon field="nome"></p-sortIcon>
+                <div class="flex items-center space-x-2">
+                  <span class="font-semibold">Produto</span>
+                  <p-sortIcon field="nome"></p-sortIcon>
+                </div>
               </th>
               <th pSortableColumn="categoria">
-                Categoria <p-sortIcon field="categoria"></p-sortIcon>
+                <div class="flex items-center space-x-2">
+                  <span class="font-semibold">Categoria</span>
+                  <p-sortIcon field="categoria"></p-sortIcon>
+                </div>
               </th>
               <th pSortableColumn="preco">
-                Preço <p-sortIcon field="preco"></p-sortIcon>
+                <div class="flex items-center space-x-2">
+                  <span class="font-semibold">Preço</span>
+                  <p-sortIcon field="preco"></p-sortIcon>
+                </div>
               </th>
               <th pSortableColumn="estoque">
-                Estoque <p-sortIcon field="estoque"></p-sortIcon>
+                <div class="flex items-center space-x-2">
+                  <span class="font-semibold">Estoque</span>
+                  <p-sortIcon field="estoque"></p-sortIcon>
+                </div>
               </th>
-              <th>Status</th>
-              <th>Ações</th>
+              <th class="text-center">
+                <span class="font-semibold">Status</span>
+              </th>
+              <th class="text-center">
+                <span class="font-semibold">Ações</span>
+              </th>
             </tr>
           </ng-template>
           
           <ng-template pTemplate="body" let-product>
-            <tr>
-              <td>{{ product.id }}</td>
+            <tr class="hover:bg-gray-50 transition-all duration-200">
+              <td class="text-center">
+                <span class="inline-flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                  {{ product.id }}
+                </span>
+              </td>
               <td>
-                <div class="flex items-center space-x-3">
-                  <img 
-                    [src]="product.imagemUrl || '/placeholder.svg?height=40&width=40'" 
-                    [alt]="product.nome"
-                    class="w-10 h-10 rounded-lg object-cover">
-                  <div>
-                    <div class="font-semibold">{{ product.nome }}</div>
-                    <div class="text-sm text-gray-500 truncate max-w-xs">
-                      {{ product.descricao }}
-                    </div>
+                <div class="flex items-center space-x-4">
+                  <div class="relative">
+                    <img 
+                      [src]="product.imagemUrl || '/placeholder.svg?height=50&width=50'" 
+                      [alt]="product.nome"
+                      class="w-12 h-12 rounded-xl object-cover shadow-md border-2 border-white">
+                    <div class="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white" 
+                         *ngIf="product.ativo"></div>
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <p class="text-sm font-semibold text-gray-900 truncate">{{ product.nome }}</p>
+                    <p class="text-sm text-gray-500 truncate max-w-xs">{{ product.descricao }}</p>
                   </div>
                 </div>
               </td>
               <td>
-                <p-tag [value]="product.categoria" [severity]="getCategorySeverity(product.categoria)"></p-tag>
-              </td>
-              <td>
-                <span class="font-semibold text-green-600">
-                  {{ product.preco | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
-                </span>
-              </td>
-              <td>
                 <p-tag 
-                  [value]="product.estoque.toString()" 
-                  [severity]="getStockSeverity(product.estoque)">
+                  [value]="product.categoria" 
+                  [severity]="getCategorySeverity(product.categoria)"
+                  class="font-medium">
                 </p-tag>
               </td>
               <td>
+                <div class="flex items-center space-x-1">
+                  <span class="text-lg font-bold text-green-600">
+                    {{ product.preco | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+                  </span>
+                </div>
+              </td>
+              <td>
+                <p-tag 
+                  [value]="product.estoque + ' un.'" 
+                  [severity]="getStockSeverity(product.estoque)"
+                  class="font-medium">
+                </p-tag>
+              </td>
+              <td class="text-center">
                 <p-tag 
                   [value]="product.ativo ? 'Ativo' : 'Inativo'" 
-                  [severity]="product.ativo ? 'success' : 'danger'">
+                  [severity]="product.ativo ? 'success' : 'danger'"
+                  class="font-medium">
                 </p-tag>
               </td>
               <td>
-                <div class="flex space-x-2">
+                <div class="flex justify-center space-x-2">
                   <p-button 
-                    icon="pi pi-eye" 
                     [text]="true"
                     [rounded]="true"
                     severity="info"
                     pTooltip="Visualizar"
-                    (onClick)="viewProduct(product.id)">
+                    tooltipPosition="top"
+                    (onClick)="viewProduct(product.id)"
+                    class="hover:bg-blue-50 transition-colors duration-200">
+                    <ng-icon name="heroEye" class="text-blue-600"></ng-icon>
                   </p-button>
                   <p-button 
-                    icon="pi pi-pencil" 
                     [text]="true"
                     [rounded]="true"
                     severity="warning"
                     pTooltip="Editar"
-                    (onClick)="editProduct(product.id)">
+                    tooltipPosition="top"
+                    (onClick)="editProduct(product.id)"
+                    class="hover:bg-yellow-50 transition-colors duration-200">
+                    <ng-icon name="heroPencil" class="text-yellow-600"></ng-icon>
                   </p-button>
                   <p-button 
-                    icon="pi pi-trash" 
                     [text]="true"
                     [rounded]="true"
                     severity="danger"
                     pTooltip="Excluir"
-                    (onClick)="deleteProduct(product)">
+                    tooltipPosition="top"
+                    (onClick)="deleteProduct(product)"
+                    class="hover:bg-red-50 transition-colors duration-200">
+                    <ng-icon name="heroTrash" class="text-red-600"></ng-icon>
                   </p-button>
                 </div>
               </td>
@@ -170,11 +296,31 @@ import { ConfirmationService, MessageService } from "primeng/api"
           
           <ng-template pTemplate="emptymessage">
             <tr>
-              <td colspan="7" class="text-center py-8">
-                <div class="text-gray-500">
-                  <i class="pi pi-inbox text-4xl mb-4 block"></i>
-                  <p class="text-lg">Nenhum produto encontrado</p>
-                  <p class="text-sm">Comece adicionando seu primeiro produto</p>
+              <td colspan="7" class="text-center py-12">
+                <div class="text-gray-500 animate-fade-in">
+                  <div class="mb-4">
+                    <ng-icon name="heroInboxArrowDown" class="text-6xl text-gray-300"></ng-icon>
+                  </div>
+                  <p class="text-xl font-medium mb-2">Nenhum produto encontrado</p>
+                  <p class="text-sm text-gray-400 mb-6">Comece adicionando seu primeiro produto ao catálogo</p>
+                  <p-button 
+                    label="Adicionar Produto" 
+                    severity="primary"
+                    (onClick)="navigateToNew()"
+                    class="gradient-primary text-white border-0">
+                    <ng-icon name="heroPlus" class="mr-2"></ng-icon>
+                  </p-button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="loadingbody">
+            <tr>
+              <td colspan="7">
+                <div class="flex items-center justify-center py-8">
+                  <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                  <span class="ml-3 text-gray-600">Carregando produtos...</span>
                 </div>
               </td>
             </tr>
@@ -183,13 +329,20 @@ import { ConfirmationService, MessageService } from "primeng/api"
       </p-card>
     </div>
 
-    <p-confirmDialog></p-confirmDialog>
-    <p-toast></p-toast>
+    <p-confirmDialog 
+      [style]="{width: '450px'}"
+      [baseZIndex]="10000"
+      rejectButtonStyleClass="p-button-text p-button-secondary"
+      acceptButtonStyleClass="p-button-danger">
+    </p-confirmDialog>
+    
+    <p-toast position="top-right"></p-toast>
   `
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = []
   searchValue = ""
+  loading = true
 
   constructor(
     private productService: ProductService,
@@ -203,9 +356,14 @@ export class ProductListComponent implements OnInit {
   }
 
   loadProducts() {
-    this.productService.getProducts().subscribe((products) => {
-      this.products = products
-    })
+    this.loading = true
+    // Simular loading para demonstrar o estado
+    setTimeout(() => {
+      this.productService.getProducts().subscribe((products) => {
+        this.products = products
+        this.loading = false
+      })
+    }, 1000)
   }
 
   navigateToNew() {
@@ -225,15 +383,16 @@ export class ProductListComponent implements OnInit {
       message: `Tem certeza que deseja excluir o produto "${product.nome}"?`,
       header: "Confirmar Exclusão",
       icon: "pi pi-exclamation-triangle",
-      acceptLabel: "Sim",
-      rejectLabel: "Não",
+      acceptLabel: "Sim, excluir",
+      rejectLabel: "Cancelar",
       accept: () => {
         this.productService.deleteProduct(product.id).subscribe((success) => {
           if (success) {
             this.messageService.add({
               severity: "success",
-              summary: "Sucesso",
+              summary: "Sucesso!",
               detail: "Produto excluído com sucesso",
+              life: 3000
             })
             this.loadProducts()
           }
@@ -246,6 +405,14 @@ export class ProductListComponent implements OnInit {
     // Implementação do filtro global será feita pelo PrimeNG Table
   }
 
+  getActiveProductsCount(): number {
+    return this.products.filter(p => p.ativo).length
+  }
+
+  getTotalValue(): number {
+    return this.products.reduce((total, product) => total + (product.preco * product.estoque), 0)
+  }
+
   getCategorySeverity(
     categoria: string
   ): "success" | "secondary" | "info" | "warning" | "danger" | "contrast" | undefined {
@@ -256,6 +423,12 @@ export class ProductListComponent implements OnInit {
         return "warning"
       case "áudio":
         return "success"
+      case "casa e jardim":
+        return "secondary"
+      case "esportes":
+        return "contrast"
+      case "moda":
+        return "danger"
       default:
         return "secondary"
     }
@@ -266,6 +439,7 @@ export class ProductListComponent implements OnInit {
   ): "success" | "secondary" | "info" | "warning" | "danger" | "contrast" | undefined {
     if (estoque === 0) return "danger"
     if (estoque < 5) return "warning"
+    if (estoque < 10) return "info"
     return "success"
   }
 }
