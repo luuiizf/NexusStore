@@ -1,8 +1,8 @@
-import { Component, type OnInit } from "@angular/core"
+import { Component,  OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
-import { Router } from "@angular/router"
-import { ProductService } from "../../services/product.service"
-import { Product } from "../../models/product.model"
+import  { Router } from "@angular/router"
+import  { ProductService } from "../../services/product.service"
+import  { Product } from "../../models/product.model"
 
 // PrimeNG Imports
 import { TableModule } from "primeng/table"
@@ -15,21 +15,13 @@ import { CardModule } from "primeng/card"
 import { InputTextModule } from "primeng/inputtext"
 import { FormsModule } from "@angular/forms"
 import { SkeletonModule } from "primeng/skeleton"
-import { RippleModule } from "primeng/ripple"
+import { TooltipModule } from "primeng/tooltip"
 
 import { ConfirmationService, MessageService } from "primeng/api"
-import { NgIconComponent, provideIcons } from '@ng-icons/core'
-import { 
-  heroPlus, 
-  heroMagnifyingGlass,
-  heroEye,
-  heroPencil,
-  heroTrash,
-  heroInboxArrowDown,
-  heroSparkles
-} from '@ng-icons/heroicons/outline'
 
 @Component({
+  standalone: true,
+  selector: "app-product-list",
   imports: [
     CommonModule,
     TableModule,
@@ -42,33 +34,17 @@ import {
     InputTextModule,
     FormsModule,
     SkeletonModule,
-    RippleModule,
-    NgIconComponent
+    TooltipModule,
   ],
-  providers: [
-    ConfirmationService, 
-    MessageService,
-    provideIcons({ 
-      heroPlus, 
-      heroMagnifyingGlass,
-      heroEye,
-      heroPencil,
-      heroTrash,
-      heroInboxArrowDown,
-      heroSparkles
-    })
-  ],
+  providers: [ConfirmationService, MessageService],
   template: `
     <div class="animate-fade-in">
       <!-- Hero Section -->
       <div class="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50 rounded-2xl mb-8 p-8 border border-gray-100">
-        <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full opacity-10"></div>
-        <div class="absolute bottom-0 left-0 -mb-4 -ml-4 w-32 h-32 bg-gradient-to-tr from-purple-400 to-pink-500 rounded-full opacity-10"></div>
-        
         <div class="relative">
           <div class="flex items-center space-x-3 mb-4">
             <div class="p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl">
-              <ng-icon name="heroSparkles" class="text-white text-2xl"></ng-icon>
+              <i class="pi pi-box text-white text-2xl"></i>
             </div>
             <div>
               <h1 class="text-3xl font-bold text-gray-800">Gerenciamento de Produtos</h1>
@@ -84,7 +60,7 @@ import {
                   <p class="text-2xl font-bold text-gray-800">{{ products.length }}</p>
                 </div>
                 <div class="p-3 bg-blue-100 rounded-lg">
-                  <ng-icon name="heroInboxArrowDown" class="text-blue-600 text-xl"></ng-icon>
+                  <i class="pi pi-box text-blue-600 text-xl"></i>
                 </div>
               </div>
             </div>
@@ -96,7 +72,7 @@ import {
                   <p class="text-2xl font-bold text-green-600">{{ getActiveProductsCount() }}</p>
                 </div>
                 <div class="p-3 bg-green-100 rounded-lg">
-                  <ng-icon name="heroSparkles" class="text-green-600 text-xl"></ng-icon>
+                  <i class="pi pi-check-circle text-green-600 text-xl"></i>
                 </div>
               </div>
             </div>
@@ -108,7 +84,7 @@ import {
                   <p class="text-2xl font-bold text-purple-600">{{ getTotalValue() | currency:'BRL':'symbol':'1.0-0':'pt-BR' }}</p>
                 </div>
                 <div class="p-3 bg-purple-100 rounded-lg">
-                  <ng-icon name="heroSparkles" class="text-purple-600 text-xl"></ng-icon>
+                  <i class="pi pi-dollar text-purple-600 text-xl"></i>
                 </div>
               </div>
             </div>
@@ -132,14 +108,14 @@ import {
               severity="primary"
               (onClick)="navigateToNew()"
               class="gradient-primary text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-              <ng-icon name="heroPlus" class="mr-2"></ng-icon>
+              <i class="pi pi-plus mr-2"></i>
             </p-button>
           </div>
           
           <div class="p-toolbar-group-end">
             <div class="relative">
               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <ng-icon name="heroMagnifyingGlass" class="text-gray-400"></ng-icon>
+                <i class="pi pi-search text-gray-400"></i>
               </div>
               <input 
                 pInputText 
@@ -239,7 +215,7 @@ import {
               <td>
                 <div class="flex items-center space-x-1">
                   <span class="text-lg font-bold text-green-600">
-                    {{ product.preco | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+                    {{ formatCurrency(product.preco) }}
                   </span>
                 </div>
               </td>
@@ -267,7 +243,7 @@ import {
                     tooltipPosition="top"
                     (onClick)="viewProduct(product.id)"
                     class="hover:bg-blue-50 transition-colors duration-200">
-                    <ng-icon name="heroEye" class="text-blue-600"></ng-icon>
+                    <i class="pi pi-eye text-blue-600"></i>
                   </p-button>
                   <p-button 
                     [text]="true"
@@ -277,7 +253,7 @@ import {
                     tooltipPosition="top"
                     (onClick)="editProduct(product.id)"
                     class="hover:bg-yellow-50 transition-colors duration-200">
-                    <ng-icon name="heroPencil" class="text-yellow-600"></ng-icon>
+                    <i class="pi pi-pencil text-yellow-600"></i>
                   </p-button>
                   <p-button 
                     [text]="true"
@@ -287,7 +263,7 @@ import {
                     tooltipPosition="top"
                     (onClick)="deleteProduct(product)"
                     class="hover:bg-red-50 transition-colors duration-200">
-                    <ng-icon name="heroTrash" class="text-red-600"></ng-icon>
+                    <i class="pi pi-trash text-red-600"></i>
                   </p-button>
                 </div>
               </td>
@@ -299,7 +275,7 @@ import {
               <td colspan="7" class="text-center py-12">
                 <div class="text-gray-500 animate-fade-in">
                   <div class="mb-4">
-                    <ng-icon name="heroInboxArrowDown" class="text-6xl text-gray-300"></ng-icon>
+                    <i class="pi pi-inbox text-6xl text-gray-300"></i>
                   </div>
                   <p class="text-xl font-medium mb-2">Nenhum produto encontrado</p>
                   <p class="text-sm text-gray-400 mb-6">Comece adicionando seu primeiro produto ao catálogo</p>
@@ -308,7 +284,7 @@ import {
                     severity="primary"
                     (onClick)="navigateToNew()"
                     class="gradient-primary text-white border-0">
-                    <ng-icon name="heroPlus" class="mr-2"></ng-icon>
+                    <i class="pi pi-plus mr-2"></i>
                   </p-button>
                 </div>
               </td>
@@ -337,12 +313,12 @@ import {
     </p-confirmDialog>
     
     <p-toast position="top-right"></p-toast>
-  `
+  `,
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = []
   searchValue = ""
-  loading = true
+  loading = false
 
   constructor(
     private productService: ProductService,
@@ -357,13 +333,10 @@ export class ProductListComponent implements OnInit {
 
   loadProducts() {
     this.loading = true
-    // Simular loading para demonstrar o estado
-    setTimeout(() => {
-      this.productService.getProducts().subscribe((products) => {
-        this.products = products
-        this.loading = false
-      })
-    }, 1000)
+    this.productService.getProducts().subscribe((products) => {
+      this.products = products
+      this.loading = false
+    })
   }
 
   navigateToNew() {
@@ -392,7 +365,7 @@ export class ProductListComponent implements OnInit {
               severity: "success",
               summary: "Sucesso!",
               detail: "Produto excluído com sucesso",
-              life: 3000
+              life: 3000,
             })
             this.loadProducts()
           }
@@ -406,15 +379,23 @@ export class ProductListComponent implements OnInit {
   }
 
   getActiveProductsCount(): number {
-    return this.products.filter(p => p.ativo).length
+    return this.products.filter((p) => p.ativo).length
   }
 
   getTotalValue(): number {
-    return this.products.reduce((total, product) => total + (product.preco * product.estoque), 0)
+    return this.products.reduce((total, product) => total + (product.preco || 0) * (product.estoque || 0), 0)
+  }
+
+  formatCurrency(value: number): string {
+    if (value == null || value === undefined) return "R$ 0,00"
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(value)
   }
 
   getCategorySeverity(
-    categoria: string
+    categoria: string,
   ): "success" | "secondary" | "info" | "warning" | "danger" | "contrast" | undefined {
     switch (categoria.toLowerCase()) {
       case "eletrônicos":
@@ -434,9 +415,7 @@ export class ProductListComponent implements OnInit {
     }
   }
 
-  getStockSeverity(
-    estoque: number
-  ): "success" | "secondary" | "info" | "warning" | "danger" | "contrast" | undefined {
+  getStockSeverity(estoque: number): "success" | "secondary" | "info" | "warning" | "danger" | "contrast" | undefined {
     if (estoque === 0) return "danger"
     if (estoque < 5) return "warning"
     if (estoque < 10) return "info"

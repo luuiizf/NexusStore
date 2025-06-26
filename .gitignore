@@ -1,4 +1,3 @@
-<<<<<<< develop
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # Compiled output
@@ -119,7 +118,3 @@ temp/
 *.njsproj
 *.sln
 *.sw?
-=======
-node_modules/
-.env
->>>>>>> main

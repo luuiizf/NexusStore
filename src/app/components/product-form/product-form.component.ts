@@ -1,6 +1,6 @@
 import { Component, type OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from "@angular/forms"
+import {  FormBuilder,  FormGroup, Validators, ReactiveFormsModule } from "@angular/forms"
 import { Router, ActivatedRoute } from "@angular/router"
 import { ProductService } from "../../services/product.service"
 
@@ -12,22 +12,12 @@ import { DropdownModule } from "primeng/dropdown"
 import { InputSwitchModule } from "primeng/inputswitch"
 import { ButtonModule } from "primeng/button"
 import { ToastModule } from "primeng/toast"
-import { ProgressSpinnerModule } from "primeng/progressspinner"
 import { DividerModule } from "primeng/divider"
+import { ProgressSpinnerModule } from "primeng/progressspinner"
 import { MessageService } from "primeng/api"
 
-import { NgIconComponent, provideIcons } from '@ng-icons/core'
-import { 
-  heroPlus, 
-  heroCheck,
-  heroXMark,
-  heroArrowLeft,
-  heroPencil,
-  heroPhoto,
-  heroSparkles
-} from '@ng-icons/heroicons/outline'
-
 @Component({
+  standalone: true,
   selector: "app-product-form",
   imports: [
     CommonModule,
@@ -39,286 +29,282 @@ import {
     InputSwitchModule,
     ButtonModule,
     ToastModule,
-    ProgressSpinnerModule,
     DividerModule,
-    NgIconComponent
+    ProgressSpinnerModule,
   ],
-  providers: [
-    MessageService,
-    provideIcons({ 
-      heroPlus, 
-      heroCheck,
-      heroXMark,
-      heroArrowLeft,
-      heroPencil,
-      heroPhoto,
-      heroSparkles
-    })
-  ],
+  providers: [MessageService],
   template: `
-    <div class="animate-fade-in max-w-5xl mx-auto">
-      <!-- Header Section -->
-      <div class="mb-8">
-        <p-button 
-          label="Voltar" 
-          severity="secondary"
-          [text]="true"
-          (onClick)="onCancel()"
-          class="mb-4 hover:bg-gray-100 transition-colors duration-200">
-          <ng-icon name="heroArrowLeft" class="mr-2"></ng-icon>
-        </p-button>
-        
-        <div class="bg-gradient-to-br from-blue-50 via-white to-purple-50 rounded-2xl p-8 border border-gray-100">
-          <div class="flex items-center space-x-4">
-            <div class="p-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl">
-              <ng-icon [name]="isEditMode ? 'heroPencil' : 'heroPlus'" class="text-white text-2xl"></ng-icon>
-            </div>
-            <div>
-              <h1 class="text-3xl font-bold text-gray-800">
-                {{ isEditMode ? 'Editar Produto' : 'Novo Produto' }}
-              </h1>
-              <p class="text-gray-600 mt-1">
-                {{ isEditMode ? 'Atualize as informações do produto' : 'Adicione um novo produto ao catálogo' }}
-              </p>
+    <div class="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 py-8">
+      <div class="container mx-auto px-4 max-w-4xl">
+        <!-- Header Section -->
+        <div class="mb-8">
+          <p-button 
+            label="Voltar" 
+            severity="secondary"
+            [text]="true"
+            (onClick)="onCancel()"
+            class="mb-6 hover:bg-gray-100 transition-colors duration-200 rounded-xl">
+            <i class="pi pi-arrow-left mr-2"></i>
+          </p-button>
+          
+          <div class="bg-white rounded-3xl p-8 shadow-xl border border-gray-100">
+            <div class="flex items-center space-x-6">
+              <div class="relative">
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl blur opacity-75"></div>
+                <div class="relative p-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl shadow-lg">
+                  <i [class]="isEditMode ? 'pi pi-pencil' : 'pi pi-plus'" class="text-white text-3xl"></i>
+                </div>
+              </div>
+              <div>
+                <h1 class="text-4xl font-bold text-gray-800 mb-2">
+                  {{ isEditMode ? 'Editar Produto' : 'Novo Produto' }}
+                </h1>
+                <p class="text-gray-600 text-lg">
+                  {{ isEditMode ? 'Atualize as informações do produto' : 'Adicione um novo produto ao catálogo' }}
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Form Section -->
-      <p-card class="animate-slide-up">
-        <ng-template pTemplate="header">
-          <div class="gradient-primary text-white p-6">
-            <h2 class="text-xl font-semibold flex items-center">
-              <ng-icon name="heroSparkles" class="mr-3"></ng-icon>
+        <!-- Form Section -->
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+          <!-- Form Header -->
+          <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-8">
+            <h2 class="text-2xl font-bold flex items-center">
+              <i class="pi pi-cog mr-3 text-3xl"></i>
               Informações do Produto
             </h2>
-            <p class="text-blue-100 mt-1">Preencha todos os campos obrigatórios</p>
+            <p class="text-blue-100 mt-2 text-lg">Preencha todos os campos obrigatórios</p>
           </div>
-        </ng-template>
 
-        <div class="p-6">
-          <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="space-y-8">
-            <!-- Informações Básicas -->
-            <div class="space-y-6">
-              <h3 class="text-lg font-semibold text-gray-800 flex items-center">
-                <div class="w-2 h-6 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full mr-3"></div>
-                Informações Básicas
-              </h3>
-              
-              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Nome -->
-                <div class="space-y-3">
-                  <label for="nome" class="block text-sm font-semibold text-gray-700">
-                    Nome do Produto *
-                  </label>
-                  <input 
-                    id="nome"
-                    type="text" 
-                    pInputText 
-                    formControlName="nome"
-                    placeholder="Digite o nome do produto"
-                    class="w-full transition-all duration-300"
-                    [class.border-red-300]="productForm.get('nome')?.invalid && productForm.get('nome')?.touched"
-                    [class.border-green-300]="productForm.get('nome')?.valid && productForm.get('nome')?.touched">
-                  <small 
-                    class="text-red-500 font-medium" 
-                    *ngIf="productForm.get('nome')?.invalid && productForm.get('nome')?.touched">
-                    Nome é obrigatório (mínimo 2 caracteres)
-                  </small>
+          <div class="p-8">
+            <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="space-y-10">
+              <!-- Informações Básicas -->
+              <div class="space-y-8">
+                <div class="flex items-center space-x-4 mb-6">
+                  <div class="w-3 h-8 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full"></div>
+                  <h3 class="text-2xl font-bold text-gray-800">Informações Básicas</h3>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <!-- Nome -->
+                  <div class="space-y-4">
+                    <label for="nome" class="block text-lg font-semibold text-gray-700">
+                      Nome do Produto *
+                    </label>
+                    <input 
+                      id="nome"
+                      type="text" 
+                      pInputText 
+                      formControlName="nome"
+                      placeholder="Digite o nome do produto"
+                      class="w-full p-4 text-lg border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300"
+                      [class.border-red-300]="productForm.get('nome')?.invalid && productForm.get('nome')?.touched"
+                      [class.border-green-300]="productForm.get('nome')?.valid && productForm.get('nome')?.touched">
+                    <small 
+                      class="text-red-500 font-medium text-base" 
+                      *ngIf="productForm.get('nome')?.invalid && productForm.get('nome')?.touched">
+                      Nome é obrigatório (mínimo 2 caracteres)
+                    </small>
+                  </div>
+
+                  <!-- Categoria -->
+                  <div class="space-y-4">
+                    <label for="categoria" class="block text-lg font-semibold text-gray-700">
+                      Categoria *
+                    </label>
+                    <p-dropdown 
+                      id="categoria"
+                      formControlName="categoria"
+                      [options]="categorias"
+                      placeholder="Selecione uma categoria"
+                      class="w-full"
+                      styleClass="w-full p-4 text-lg border-2 border-gray-200 rounded-xl focus:border-blue-500"
+                      [class.border-red-300]="productForm.get('categoria')?.invalid && productForm.get('categoria')?.touched">
+                    </p-dropdown>
+                    <small 
+                      class="text-red-500 font-medium text-base" 
+                      *ngIf="productForm.get('categoria')?.invalid && productForm.get('categoria')?.touched">
+                      Categoria é obrigatória
+                    </small>
+                  </div>
                 </div>
 
-                <!-- Categoria -->
-                <div class="space-y-3">
-                  <label for="categoria" class="block text-sm font-semibold text-gray-700">
-                    Categoria *
+                <!-- Descrição -->
+                <div class="space-y-4">
+                  <label for="descricao" class="block text-lg font-semibold text-gray-700">
+                    Descrição *
                   </label>
-                  <p-dropdown 
-                    id="categoria"
-                    formControlName="categoria"
-                    [options]="categorias"
-                    placeholder="Selecione uma categoria"
-                    class="w-full"
-                    [class.border-red-300]="productForm.get('categoria')?.invalid && productForm.get('categoria')?.touched">
-                  </p-dropdown>
+                  <textarea 
+                    id="descricao"
+                    pInputTextarea 
+                    formControlName="descricao"
+                    placeholder="Descreva o produto detalhadamente..."
+                    rows="5"
+                    class="w-full p-4 text-lg border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 resize-none"
+                    [class.border-red-300]="productForm.get('descricao')?.invalid && productForm.get('descricao')?.touched"
+                    [class.border-green-300]="productForm.get('descricao')?.valid && productForm.get('descricao')?.touched">
+                  </textarea>
                   <small 
-                    class="text-red-500 font-medium" 
-                    *ngIf="productForm.get('categoria')?.invalid && productForm.get('categoria')?.touched">
-                    Categoria é obrigatória
+                    class="text-red-500 font-medium text-base" 
+                    *ngIf="productForm.get('descricao')?.invalid && productForm.get('descricao')?.touched">
+                    Descrição é obrigatória (mínimo 10 caracteres)
                   </small>
                 </div>
               </div>
 
-              <!-- Descrição -->
-              <div class="space-y-3">
-                <label for="descricao" class="block text-sm font-semibold text-gray-700">
-                  Descrição *
-                </label>
-                <textarea 
-                  id="descricao"
-                  pInputTextarea 
-                  formControlName="descricao"
-                  placeholder="Descreva o produto detalhadamente..."
-                  rows="4"
-                  class="w-full transition-all duration-300"
-                  [class.border-red-300]="productForm.get('descricao')?.invalid && productForm.get('descricao')?.touched"
-                  [class.border-green-300]="productForm.get('descricao')?.valid && productForm.get('descricao')?.touched">
-                </textarea>
-                <small 
-                  class="text-red-500 font-medium" 
-                  *ngIf="productForm.get('descricao')?.invalid && productForm.get('descricao')?.touched">
-                  Descrição é obrigatória (mínimo 10 caracteres)
-                </small>
-              </div>
-            </div>
+              <p-divider></p-divider>
 
-            <p-divider></p-divider>
-
-            <!-- Preço e Estoque -->
-            <div class="space-y-6">
-              <h3 class="text-lg font-semibold text-gray-800 flex items-center">
-                <div class="w-2 h-6 bg-gradient-to-b from-green-500 to-emerald-600 rounded-full mr-3"></div>
-                Preço e Estoque
-              </h3>
-              
-              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Preço -->
-                <div class="space-y-3">
-                  <label for="preco" class="block text-sm font-semibold text-gray-700">
-                    Preço *
-                  </label>
-                  <p-inputNumber
-                    id="preco"
-                    formControlName="preco"
-                    mode="currency"
-                    currency="BRL"
-                    locale="pt-BR"
-                    placeholder="0,00"
-                    class="w-full"
-                    [class.border-red-300]="productForm.get('preco')?.invalid && productForm.get('preco')?.touched">
-                  </p-inputNumber>
-                  <small 
-                    class="text-red-500 font-medium" 
-                    *ngIf="productForm.get('preco')?.invalid && productForm.get('preco')?.touched">
-                    Preço é obrigatório e deve ser maior que zero
-                  </small>
+              <!-- Preço e Estoque -->
+              <div class="space-y-8">
+                <div class="flex items-center space-x-4 mb-6">
+                  <div class="w-3 h-8 bg-gradient-to-b from-green-500 to-emerald-600 rounded-full"></div>
+                  <h3 class="text-2xl font-bold text-gray-800">Preço e Estoque</h3>
                 </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <!-- Preço -->
+                  <div class="space-y-4">
+                    <label for="preco" class="block text-lg font-semibold text-gray-700">
+                      Preço *
+                    </label>
+                    <p-inputNumber
+                      id="preco"
+                      formControlName="preco"
+                      mode="currency"
+                      currency="BRL"
+                      locale="pt-BR"
+                      placeholder="0,00"
+                      styleClass="w-full"
+                      inputStyleClass="w-full p-4 text-lg border-2 border-gray-200 rounded-xl focus:border-green-500"
+                      [class.border-red-300]="productForm.get('preco')?.invalid && productForm.get('preco')?.touched">
+                    </p-inputNumber>
+                    <small 
+                      class="text-red-500 font-medium text-base" 
+                      *ngIf="productForm.get('preco')?.invalid && productForm.get('preco')?.touched">
+                      Preço é obrigatório e deve ser maior que zero
+                    </small>
+                  </div>
 
-                <!-- Estoque -->
-                <div class="space-y-3">
-                  <label for="estoque" class="block text-sm font-semibold text-gray-700">
-                    Quantidade em Estoque *
-                  </label>
-                  <p-inputNumber
-                    id="estoque"
-                    formControlName="estoque"
-                    placeholder="0"
-                    [min]="0"
-                    class="w-full"
-                    [class.border-red-300]="productForm.get('estoque')?.invalid && productForm.get('estoque')?.touched">
-                  </p-inputNumber>
-                  <small 
-                    class="text-red-500 font-medium" 
-                    *ngIf="productForm.get('estoque')?.invalid && productForm.get('estoque')?.touched">
-                    Estoque é obrigatório
-                  </small>
-                </div>
-              </div>
-            </div>
-
-            <p-divider></p-divider>
-
-            <!-- Imagem e Status -->
-            <div class="space-y-6">
-              <h3 class="text-lg font-semibold text-gray-800 flex items-center">
-                <div class="w-2 h-6 bg-gradient-to-b from-purple-500 to-pink-600 rounded-full mr-3"></div>
-                Imagem e Status
-              </h3>
-              
-              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- URL da Imagem -->
-                <div class="space-y-3">
-                  <label for="imagemUrl" class="block text-sm font-semibold text-gray-700 flex items-center">
-                    <ng-icon name="heroPhoto" class="mr-2"></ng-icon>
-                    URL da Imagem
-                  </label>
-                  <input 
-                    id="imagemUrl"
-                    type="url" 
-                    pInputText 
-                    formControlName="imagemUrl"
-                    placeholder="https://exemplo.com/imagem.jpg"
-                    class="w-full transition-all duration-300">
-                  <small class="text-gray-500">
-                    Adicione uma URL válida para a imagem do produto
-                  </small>
-                </div>
-
-                <!-- Status Ativo -->
-                <div class="space-y-3">
-                  <label class="block text-sm font-semibold text-gray-700">
-                    Status do Produto
-                  </label>
-                  <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-xl">
-                    <p-inputSwitch 
-                      id="ativo"
-                      formControlName="ativo">
-                    </p-inputSwitch>
-                    <div>
-                      <p class="font-medium text-gray-800">
-                        {{ productForm.get('ativo')?.value ? 'Produto Ativo' : 'Produto Inativo' }}
-                      </p>
-                      <p class="text-sm text-gray-500">
-                        {{ productForm.get('ativo')?.value ? 'Visível na loja' : 'Oculto na loja' }}
-                      </p>
-                    </div>
+                  <!-- Estoque -->
+                  <div class="space-y-4">
+                    <label for="estoque" class="block text-lg font-semibold text-gray-700">
+                      Quantidade em Estoque *
+                    </label>
+                    <p-inputNumber
+                      id="estoque"
+                      formControlName="estoque"
+                      placeholder="0"
+                      [min]="0"
+                      styleClass="w-full"
+                      inputStyleClass="w-full p-4 text-lg border-2 border-gray-200 rounded-xl focus:border-green-500"
+                      [class.border-red-300]="productForm.get('estoque')?.invalid && productForm.get('estoque')?.touched">
+                    </p-inputNumber>
+                    <small 
+                      class="text-red-500 font-medium text-base" 
+                      *ngIf="productForm.get('estoque')?.invalid && productForm.get('estoque')?.touched">
+                      Estoque é obrigatório
+                    </small>
                   </div>
                 </div>
               </div>
 
-              <!-- Preview da Imagem -->
-              <div *ngIf="productForm.get('imagemUrl')?.value" class="mt-6">
-                <label class="block text-sm font-semibold text-gray-700 mb-3">
-                  Preview da Imagem
-                </label>
-                <div class="relative inline-block">
-                  <img 
-                    [src]="productForm.get('imagemUrl')?.value" 
-                    [alt]="productForm.get('nome')?.value || 'Preview'"
-                    class="w-32 h-32 object-cover rounded-xl shadow-lg border-4 border-white"
-                    (error)="onImageError($event)">
-                  <div class="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full border-2 border-white"></div>
+              <p-divider></p-divider>
+
+              <!-- Imagem e Status -->
+              <div class="space-y-8">
+                <div class="flex items-center space-x-4 mb-6">
+                  <div class="w-3 h-8 bg-gradient-to-b from-purple-500 to-pink-600 rounded-full"></div>
+                  <h3 class="text-2xl font-bold text-gray-800">Imagem e Status</h3>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <!-- URL da Imagem -->
+                  <div class="space-y-4">
+                    <label for="imagemUrl" class="block text-lg font-semibold text-gray-700 flex items-center">
+                      <i class="pi pi-image mr-3 text-purple-600"></i>
+                      URL da Imagem
+                    </label>
+                    <input 
+                      id="imagemUrl"
+                      type="url" 
+                      pInputText 
+                      formControlName="imagemUrl"
+                      placeholder="https://exemplo.com/imagem.jpg"
+                      class="w-full p-4 text-lg border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300">
+                    <small class="text-gray-500 text-base">
+                      Adicione uma URL válida para a imagem do produto
+                    </small>
+                  </div>
+
+                  <!-- Status Ativo -->
+                  <div class="space-y-4">
+                    <label class="block text-lg font-semibold text-gray-700">
+                      Status do Produto
+                    </label>
+                    <div class="flex items-center space-x-6 p-6 bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl border border-gray-200">
+                      <p-inputSwitch 
+                        id="ativo"
+                        formControlName="ativo"
+                        styleClass="scale-125">
+                      </p-inputSwitch>
+                      <div>
+                        <p class="font-bold text-gray-800 text-lg">
+                          {{ productForm.get('ativo')?.value ? 'Produto Ativo' : 'Produto Inativo' }}
+                        </p>
+                        <p class="text-gray-600">
+                          {{ productForm.get('ativo')?.value ? 'Visível na loja' : 'Oculto na loja' }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Preview da Imagem -->
+                <div *ngIf="productForm.get('imagemUrl')?.value" class="mt-8">
+                  <label class="block text-lg font-semibold text-gray-700 mb-4">
+                    Preview da Imagem
+                  </label>
+                  <div class="relative inline-block">
+                    <img 
+                      [src]="productForm.get('imagemUrl')?.value" 
+                      [alt]="productForm.get('nome')?.value || 'Preview'"
+                      class="w-48 h-48 object-cover rounded-2xl shadow-xl border-4 border-white"
+                      (error)="onImageError($event)">
+                    <div class="absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full border-4 border-white shadow-lg"></div>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Botões de Ação -->
-            <div class="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-8 border-t border-gray-200">
-              <p-button 
-                label="Cancelar" 
-                severity="secondary"
-                [text]="true"
-                (onClick)="onCancel()"
-                class="w-full sm:w-auto hover:bg-gray-100 transition-colors duration-200">
-                <ng-icon name="heroXMark" class="mr-2"></ng-icon>
-              </p-button>
-              
-              <p-button 
-                [label]="isEditMode ? 'Atualizar Produto' : 'Criar Produto'" 
-                type="submit"
-                [disabled]="productForm.invalid || isSubmitting"
-                [loading]="isSubmitting"
-                class="w-full sm:w-auto gradient-primary text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-                <ng-icon [name]="isEditMode ? 'heroCheck' : 'heroPlus'" class="mr-2" *ngIf="!isSubmitting"></ng-icon>
-              </p-button>
-            </div>
-          </form>
+              <!-- Botões de Ação -->
+              <div class="flex flex-col sm:flex-row justify-end space-y-4 sm:space-y-0 sm:space-x-6 pt-10 border-t-2 border-gray-100">
+                <p-button 
+                  label="Cancelar" 
+                  severity="secondary"
+                  [outlined]="true"
+                  (onClick)="onCancel()"
+                  class="w-full sm:w-auto px-8 py-4 text-lg font-semibold rounded-xl hover:bg-gray-50 transition-all duration-300">
+                  <i class="pi pi-times mr-2"></i>
+                </p-button>
+                
+                <p-button 
+                  [label]="isEditMode ? 'Atualizar Produto' : 'Criar Produto'" 
+                  type="submit"
+                  [disabled]="productForm.invalid || isSubmitting"
+                  [loading]="isSubmitting"
+                  class="w-full sm:w-auto px-8 py-4 text-lg font-semibold bg-gradient-to-r from-blue-500 to-purple-600 text-white border-0 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
+                  <i [class]="isEditMode ? 'pi pi-check' : 'pi pi-plus'" class="mr-2" *ngIf="!isSubmitting"></i>
+                </p-button>
+              </div>
+            </form>
+          </div>
         </div>
-      </p-card>
+      </div>
     </div>
 
     <p-toast position="top-right"></p-toast>
-  `
+  `,
 })
 export class ProductFormComponent implements OnInit {
   productForm: FormGroup
@@ -360,9 +346,9 @@ export class ProductFormComponent implements OnInit {
     return this.fb.group({
       nome: ["", [Validators.required, Validators.minLength(2)]],
       descricao: ["", [Validators.required, Validators.minLength(10)]],
-      preco: [0, [Validators.required, Validators.min(0.01)]],
+      preco: [null, [Validators.required, Validators.min(0.01)]],
       categoria: ["", Validators.required],
-      estoque: [0, [Validators.required, Validators.min(0)]],
+      estoque: [null, [Validators.required, Validators.min(0)]],
       ativo: [true],
       imagemUrl: [""],
     })
@@ -386,7 +372,7 @@ export class ProductFormComponent implements OnInit {
             severity: "error",
             summary: "Erro",
             detail: "Produto não encontrado",
-            life: 5000
+            life: 5000,
           })
           this.router.navigate(["/produtos"])
         }
@@ -407,7 +393,7 @@ export class ProductFormComponent implements OnInit {
                 severity: "success",
                 summary: "Sucesso!",
                 detail: "Produto atualizado com sucesso",
-                life: 3000
+                life: 3000,
               })
               setTimeout(() => this.router.navigate(["/produtos"]), 1500)
             }
@@ -417,7 +403,7 @@ export class ProductFormComponent implements OnInit {
               severity: "error",
               summary: "Erro",
               detail: "Erro ao atualizar produto",
-              life: 5000
+              life: 5000,
             })
             this.isSubmitting = false
           },
@@ -429,7 +415,7 @@ export class ProductFormComponent implements OnInit {
               severity: "success",
               summary: "Sucesso!",
               detail: "Produto criado com sucesso",
-              life: 3000
+              life: 3000,
             })
             setTimeout(() => this.router.navigate(["/produtos"]), 1500)
           },
@@ -438,7 +424,7 @@ export class ProductFormComponent implements OnInit {
               severity: "error",
               summary: "Erro",
               detail: "Erro ao criar produto",
-              life: 5000
+              life: 5000,
             })
             this.isSubmitting = false
           },
@@ -449,11 +435,11 @@ export class ProductFormComponent implements OnInit {
         severity: "warn",
         summary: "Atenção",
         detail: "Por favor, preencha todos os campos obrigatórios",
-        life: 5000
+        life: 5000,
       })
-      
+
       // Marcar todos os campos como touched para mostrar erros
-      Object.keys(this.productForm.controls).forEach(key => {
+      Object.keys(this.productForm.controls).forEach((key) => {
         this.productForm.get(key)?.markAsTouched()
       })
     }
@@ -464,6 +450,6 @@ export class ProductFormComponent implements OnInit {
   }
 
   onImageError(event: any) {
-    event.target.src = '/placeholder.svg?height=128&width=128'
+    event.target.src = "/placeholder.svg?height=192&width=192"
   }
 }
