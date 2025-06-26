@@ -117,4 +117,8 @@ temp/
 *.ntvs*
 *.njsproj
 *.sln
+<<<<<<< HEAD
 *.sw?
+=======
+*.sw?
+>>>>>>> 5e68479a (melhorias no projeto)

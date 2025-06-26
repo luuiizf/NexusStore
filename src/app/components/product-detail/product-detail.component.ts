@@ -1,8 +1,8 @@
-import { Component, type OnInit } from "@angular/core"
+import { Component,  OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
-import { Router, ActivatedRoute } from "@angular/router"
-import { ProductService } from "../../services/product.service"
-import { Product } from "../../models/product.model"
+import  { Router, ActivatedRoute } from "@angular/router"
+import  { ProductService } from "../../services/product.service"
+import  { Product } from "../../models/product.model"
 
 // PrimeNG Imports
 import { CardModule } from "primeng/card"
@@ -14,52 +14,20 @@ import { ConfirmDialogModule } from "primeng/confirmdialog"
 import { SkeletonModule } from "primeng/skeleton"
 import { MessageService, ConfirmationService } from "primeng/api"
 
-
-import { NgIconComponent, provideIcons } from '@ng-icons/core'
-import { 
-  heroArrowLeft,
-  heroPencil,
-  heroTrash,
-  heroCog,
-  heroEye,
-  heroCalendarDays,
-  heroCheckCircle,
-  heroXCircle,
-  heroSparkles,
-  heroCurrencyDollar,
-  heroArchiveBox
-} from '@ng-icons/heroicons/outline'
-
 @Component({
+  standalone: true,
   selector: "app-product-detail",
   imports: [
-    CommonModule, 
-    CardModule, 
-    ButtonModule, 
-    TagModule, 
-    DividerModule, 
-    ToastModule, 
+    CommonModule,
+    CardModule,
+    ButtonModule,
+    TagModule,
+    DividerModule,
+    ToastModule,
     ConfirmDialogModule,
     SkeletonModule,
-    NgIconComponent
   ],
-  providers: [
-    MessageService, 
-    ConfirmationService,
-    provideIcons({ 
-      heroArrowLeft,
-      heroPencil,
-      heroTrash,
-      heroCog,
-      heroEye,
-      heroCalendarDays,
-      heroCheckCircle,
-      heroXCircle,
-      heroSparkles,
-      heroCurrencyDollar,
-      heroArchiveBox
-    })
-  ],
+  providers: [MessageService, ConfirmationService],
   template: `
     <div class="animate-fade-in max-w-6xl mx-auto" *ngIf="product">
       <!-- Header Section -->
@@ -70,14 +38,14 @@ import {
           [text]="true"
           (onClick)="goBack()"
           class="mb-4 hover:bg-gray-100 transition-colors duration-200">
-          <ng-icon name="heroArrowLeft" class="mr-2"></ng-icon>
+          <i class="pi pi-arrow-left mr-2"></i>
         </p-button>
         
         <div class="bg-gradient-to-br from-blue-50 via-white to-purple-50 rounded-2xl p-8 border border-gray-100">
           <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-4 lg:space-y-0">
             <div class="flex items-center space-x-4">
               <div class="p-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl">
-                <ng-icon name="heroEye" class="text-white text-2xl"></ng-icon>
+                <i class="pi pi-eye text-white text-2xl"></i>
               </div>
               <div>
                 <h1 class="text-3xl font-bold text-gray-800">{{ product.nome }}</h1>
@@ -91,7 +59,7 @@ import {
                 severity="help"
                 (onClick)="editProduct()"
                 class="shadow-lg hover:shadow-xl transition-all duration-300">
-                <ng-icon name="heroPencil" class="mr-2"></ng-icon>
+                <i class="pi pi-pencil mr-2"></i>
               </p-button>
               <p-button 
                 label="Duplicar" 
@@ -99,14 +67,14 @@ import {
                 [outlined]="true"
                 (onClick)="duplicateProduct()"
                 class="shadow-lg hover:shadow-xl transition-all duration-300">
-                <ng-icon name="heroCog" class="mr-2"></ng-icon>
+                <i class="pi pi-copy mr-2"></i>
               </p-button>
               <p-button 
                 label="Excluir" 
                 severity="danger"
                 (onClick)="deleteProduct()"
                 class="shadow-lg hover:shadow-xl transition-all duration-300">
-                <ng-icon name="heroTrash" class="mr-2"></ng-icon>
+                <i class="pi pi-trash mr-2"></i>
               </p-button>
             </div>
           </div>
@@ -122,7 +90,7 @@ import {
             <ng-template pTemplate="header">
               <div class="gradient-primary text-white p-4">
                 <h3 class="text-lg font-semibold flex items-center">
-                  <ng-icon name="heroSparkles" class="mr-2"></ng-icon>
+                  <i class="pi pi-image mr-2"></i>
                   Imagem do Produto
                 </h3>
               </div>
@@ -143,7 +111,7 @@ import {
                   [value]="product.ativo ? 'Ativo' : 'Inativo'" 
                   [severity]="product.ativo ? 'success' : 'danger'"
                   class="text-base font-semibold px-4 py-2">
-                  <ng-icon [name]="product.ativo ? 'heroCheckCircle' : 'heroXCircle'" class="mr-2"></ng-icon>
+                  <i [class]="product.ativo ? 'pi pi-check-circle' : 'pi pi-times-circle'" class="mr-2"></i>
                 </p-tag>
                 <p-tag 
                   [value]="product.categoria" 
@@ -166,19 +134,19 @@ import {
               <div class="flex items-center justify-between p-3 bg-green-50 rounded-xl">
                 <div class="flex items-center space-x-3">
                   <div class="p-2 bg-green-100 rounded-lg">
-                    <ng-icon name="heroCurrencyDollar" class="text-green-600"></ng-icon>
+                    <i class="pi pi-dollar text-green-600"></i>
                   </div>
                   <span class="font-medium text-gray-700">Preço</span>
                 </div>
                 <span class="text-xl font-bold text-green-600">
-                  {{ product.preco | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+                  {{ formatCurrency(product.preco) }}
                 </span>
               </div>
 
               <div class="flex items-center justify-between p-3 bg-blue-50 rounded-xl">
                 <div class="flex items-center space-x-3">
                   <div class="p-2 bg-blue-100 rounded-lg">
-                    <ng-icon name="heroArchiveBox" class="text-blue-600"></ng-icon>
+                    <i class="pi pi-box text-blue-600"></i>
                   </div>
                   <span class="font-medium text-gray-700">Estoque</span>
                 </div>
@@ -190,7 +158,7 @@ import {
               <div class="flex items-center justify-between p-3 bg-purple-50 rounded-xl">
                 <div class="flex items-center space-x-3">
                   <div class="p-2 bg-purple-100 rounded-lg">
-                    <ng-icon name="heroCalendarDays" class="text-purple-600"></ng-icon>
+                    <i class="pi pi-calendar text-purple-600"></i>
                   </div>
                   <span class="font-medium text-gray-700">Criado em</span>
                 </div>
@@ -268,7 +236,7 @@ import {
                 <div class="border-l-4 border-indigo-500 pl-4">
                   <h4 class="font-semibold text-gray-800 mb-1">Valor Total</h4>
                   <p class="text-indigo-600 font-bold text-lg">
-                    {{ (product.preco * product.estoque) | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+                    {{ formatCurrency((product.preco || 0) * (product.estoque || 0)) }}
                   </p>
                   <p class="text-gray-600 text-sm">
                     Valor total em estoque
@@ -286,7 +254,7 @@ import {
                 severity="help"
                 class="flex-1 shadow-lg hover:shadow-xl transition-all duration-300"
                 (onClick)="editProduct()">
-                <ng-icon name="heroPencil" class="mr-2"></ng-icon>
+                <i class="pi pi-pencil mr-2"></i>
               </p-button>
               
               <p-button 
@@ -295,7 +263,7 @@ import {
                 [outlined]="true"
                 class="flex-1 shadow-lg hover:shadow-xl transition-all duration-300"
                 (onClick)="duplicateProduct()">
-                <ng-icon name="heroCopy" class="mr-2"></ng-icon>
+                <i class="pi pi-copy mr-2"></i>
               </p-button>
               
               <p-button 
@@ -303,7 +271,7 @@ import {
                 severity="danger"
                 class="flex-1 shadow-lg hover:shadow-xl transition-all duration-300"
                 (onClick)="deleteProduct()">
-                <ng-icon name="heroTrash" class="mr-2"></ng-icon>
+                <i class="pi pi-trash mr-2"></i>
               </p-button>
             </div>
           </p-card>
@@ -329,7 +297,7 @@ import {
     </p-confirmDialog>
     
     <p-toast position="top-right"></p-toast>
-  `
+  `,
 })
 export class ProductDetailComponent implements OnInit {
   product?: Product
@@ -352,22 +320,19 @@ export class ProductDetailComponent implements OnInit {
 
   loadProduct() {
     if (this.productId) {
-      // Simular loading
-      setTimeout(() => {
-        this.productService.getProduct(this.productId!).subscribe((product) => {
-          if (product) {
-            this.product = product
-          } else {
-            this.messageService.add({
-              severity: "error",
-              summary: "Erro",
-              detail: "Produto não encontrado",
-              life: 5000
-            })
-            this.router.navigate(["/produtos"])
-          }
-        })
-      }, 500)
+      this.productService.getProduct(this.productId!).subscribe((product) => {
+        if (product) {
+          this.product = product
+        } else {
+          this.messageService.add({
+            severity: "error",
+            summary: "Erro",
+            detail: "Produto não encontrado",
+            life: 5000,
+          })
+          this.router.navigate(["/produtos"])
+        }
+      })
     }
   }
 
@@ -392,7 +357,7 @@ export class ProductDetailComponent implements OnInit {
                 severity: "success",
                 summary: "Sucesso!",
                 detail: "Produto excluído com sucesso",
-                life: 3000
+                life: 3000,
               })
               setTimeout(() => this.router.navigate(["/produtos"]), 1500)
             }
@@ -420,7 +385,7 @@ export class ProductDetailComponent implements OnInit {
         severity: "success",
         summary: "Sucesso!",
         detail: "Produto duplicado com sucesso",
-        life: 3000
+        life: 3000,
       })
       setTimeout(() => this.router.navigate(["/produtos/editar", newProduct.id]), 1500)
     })
@@ -430,8 +395,16 @@ export class ProductDetailComponent implements OnInit {
     this.router.navigate(["/produtos"])
   }
 
+  formatCurrency(value: number): string {
+    if (value == null || value === undefined) return "R$ 0,00"
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(value)
+  }
+
   getCategorySeverity(
-    categoria: string
+    categoria: string,
   ): "success" | "secondary" | "info" | "warning" | "danger" | "contrast" | undefined {
     switch (categoria.toLowerCase()) {
       case "eletrônicos":
