@@ -127,7 +127,7 @@ interface Product {
 
 ## 📚 Conceitos Aplicados
 
-- **Componentes Standalone**: Arquitetura moderna do Angular 17
+- **Componentes Standalone**: Arquitetura moderna do Angular 19
 - **Programação Reativa**: Uso de RxJS e Observables
 - **Formulários Reativos**: Validação e controle de estado
 - **Roteamento**: Navegação entre páginas com parâmetros
@@ -145,7 +145,6 @@ interface Product {
 
 ---
 
-**Desenvolvido por:** Luiz Fernando Gama Nery
-**Disciplina:** Aplicações com Interfaces Ricas  
-**Instituição:** IFRN - CNAT
-**Ano:** 2025
+- **Desenvolvido por:** Luiz Fernando Gama Nery
+- **Disciplina:** Aplicações com Interfaces Ricas  
+- **Instituição:** IFRN - CNAT
