@@ -10,7 +10,6 @@ import { HeaderComponent } from "./components/header/header.component"
       <app-header></app-header>
       
       <main class="container mx-auto pt-24 px-4 py-8">
-        <h1 class="text-4xl text-red-600 font-bold text-center">Tailwind está funcionando!</h1>
         <router-outlet></router-outlet>
       </main>
     </div>
