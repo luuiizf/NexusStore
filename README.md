@@ -6,9 +6,10 @@ Este projeto visa demonstrar o funcionamento básico de uma loja virtual, inclui
 
 ## 🚀 Tecnologias Utilizadas
 
-- **Angular 17** – Framework front-end baseado em componentes
+- **Angular 19** – Framework front-end baseado em componentes
 - **TypeScript** – Superset do JavaScript com tipagem estática
 - **PrimeNG** – Biblioteca de componentes UI rica e moderna
+- **NG Icons** - Biblioteca de ícones do Angular
 - **Tailwind CSS** – Framework CSS utilitário para estilização rápida
 - **RxJS** – Programação reativa para gerenciamento de estado
 
@@ -34,7 +35,7 @@ Este projeto visa demonstrar o funcionamento básico de uma loja virtual, inclui
 
 ## 📁 Estrutura do Projeto
 
-\`\`\`
+```
 src/
 ├── app/
 │   ├── components/
@@ -50,13 +51,13 @@ src/
 │   └── app.routes.ts           # Configuração de rotas
 ├── styles.css                  # Estilos globais
 └── main.ts                     # Bootstrap da aplicação
-\`\`\`
+```
 
 ## 🎯 Modelo de Dados
 
 O modelo `Product` implementa os requisitos da atividade:
 
-\`\`\`typescript
+```typescript
 interface Product {
   id: number;           // Identificador único
   nome: string;         // Nome do produto (string)
@@ -68,30 +69,30 @@ interface Product {
   imagemUrl?: string;   // URL da imagem (string opcional)
   dataCriacao: Date;    // Data de criação
 }
-\`\`\`
+```
 
 ## 🚀 Como Executar
 
 1. **Clone o repositório:**
-   \`\`\`bash
+   ```bash
    git clone https://github.com/seu-usuario/nexus-store.git
    cd nexus-store
-   \`\`\`
+   ```
 
 2. **Instale as dependências:**
-   \`\`\`bash
+   ```bash
    npm install
-   \`\`\`
+   ```
 
 3. **Execute o projeto:**
-   \`\`\`bash
+   ```bash
    ng serve
-   \`\`\`
+   ```
 
 4. **Acesse no navegador:**
-   \`\`\`
+   ```
    http://localhost:4200
-   \`\`\`
+   ```
 
 ## 📱 Funcionalidades da Interface
 
@@ -144,7 +145,7 @@ interface Product {
 
 ---
 
-**Desenvolvido por:** [Seu Nome]  
+**Desenvolvido por:** Luiz Fernando Gama Nery
 **Disciplina:** Aplicações com Interfaces Ricas  
-**Instituição:** [Nome da Faculdade]  
-**Ano:** 2024
+**Instituição:** IFRN - CNAT
+**Ano:** 2025
