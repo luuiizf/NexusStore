@@ -1,0 +1,10 @@
+.product-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0.5rem;
+  width: 220px;
+  display: inline-block;
+}
+.ativo { color: green; }
+.inativo { color: red; }

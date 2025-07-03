@@ -1,0 +1,7 @@
+<div class="product-card">
+  <h3>{{ product.nome }}</h3>
+  <p>Preço: {{ product.preco | currency:'BRL' }}</p>
+  <p>Estoque: {{ product.estoque }}</p>
+  <p>Status: <span [ngClass]="product.ativo ? 'ativo' : 'inativo'">{{ product.ativo ? 'Ativo' : 'Inativo' }}</span></p>
+  <button (click)="onSelect()">Selecionar</button>
+</div>

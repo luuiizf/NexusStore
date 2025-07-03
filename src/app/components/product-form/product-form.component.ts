@@ -1,4 +1,4 @@
-import { Component, type OnInit } from "@angular/core"
+import { Component, type OnInit, Input, Output, EventEmitter } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import {  FormBuilder,  FormGroup, Validators, ReactiveFormsModule } from "@angular/forms"
 import { Router, ActivatedRoute } from "@angular/router"
@@ -300,6 +300,10 @@ import { MessageService } from "primeng/api"
   `,
 })
 export class ProductFormComponent implements OnInit {
+  @Input() product?: any
+  @Output() save = new EventEmitter<any>() 
+  @Output() cancel = new EventEmitter<void>() 
+
   productForm: FormGroup
   isEditMode = false
   isSubmitting = false
@@ -326,6 +330,13 @@ export class ProductFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Se receber produto via @Input, preenche o formulário e ativa modo edição
+    if (this.product) {
+      this.isEditMode = true
+      this.productForm.patchValue(this.product)
+    }
+
+    // Se for usado via rota, mantém o comportamento antigo
     this.route.params.subscribe((params) => {
       if (params["id"]) {
         this.isEditMode = true
@@ -377,6 +388,12 @@ export class ProductFormComponent implements OnInit {
     if (this.productForm.valid) {
       this.isSubmitting = true
       const formData = this.productForm.value
+
+      if (this.save.observers.length > 0) {
+        this.save.emit(formData)
+        this.isSubmitting = false
+        return
+      }
 
       if (this.isEditMode && this.productId) {
         this.productService.updateProduct(this.productId, formData).subscribe({
@@ -431,7 +448,6 @@ export class ProductFormComponent implements OnInit {
         life: 5000,
       })
 
-      // Marcar todos os campos como touched para mostrar erros
       Object.keys(this.productForm.controls).forEach((key) => {
         this.productForm.get(key)?.markAsTouched()
       })
@@ -439,6 +455,10 @@ export class ProductFormComponent implements OnInit {
   }
 
   onCancel() {
+    if (this.cancel.observers.length > 0) {
+      this.cancel.emit()
+      return
+  }
     this.router.navigate(["/produtos"])
   }
 

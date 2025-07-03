@@ -4,6 +4,8 @@ import  { Router } from "@angular/router"
 import  { ProductService } from "../../services/product.service"
 import  { Product } from "../../models/product.model"
 
+import { ProductCardComponent } from "../product-card/product-card.component"
+
 // PrimeNG Imports
 import { TableModule } from "primeng/table"
 import { ButtonModule } from "primeng/button"
@@ -36,6 +38,7 @@ import { ConfirmationService, MessageService } from "primeng/api"
     SkeletonModule,
     TooltipModule,
     FloatLabelModule,
+    ProductCardComponent,
   ],
 
   providers: [ConfirmationService, MessageService],
@@ -418,4 +421,9 @@ export class ProductListComponent implements OnInit {
     if (estoque < 10) return "info"
     return "success"
   }
+
+  onProductSelected(product: Product) {
+  this.viewProduct(product.id)
+  }
 }
+
