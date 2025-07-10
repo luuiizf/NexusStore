@@ -3,15 +3,16 @@ import { AppComponent } from "./app/app.component"
 import { importProvidersFrom } from "@angular/core"
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
 import { RouterModule } from "@angular/router"
+import { HttpClientModule } from "@angular/common/http"
 import { routes } from "./app/app.routes"
 
 // PrimeNG Configuration
 import { providePrimeNG } from "primeng/config"
-import Material from '@primeng/themes/aura';
+import Material from "@primeng/themes/aura"
 
 bootstrapApplication(AppComponent, {
   providers: [
-    importProvidersFrom(BrowserAnimationsModule, RouterModule.forRoot(routes)),
+    importProvidersFrom(BrowserAnimationsModule, RouterModule.forRoot(routes), HttpClientModule),
     providePrimeNG({
       theme: {
         preset: Material,
