@@ -31,6 +31,7 @@ INSTALLED_APPS = [
 
     # Terceiros
     'rest_framework',
+    'rest_framework_simplejwt',
     'corsheaders',
     'django_filters',
     'drf_yasg',  # Swagger
@@ -146,6 +147,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
 }

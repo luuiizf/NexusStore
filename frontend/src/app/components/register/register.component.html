@@ -1,0 +1,13 @@
+<form (ngSubmit)="register()">
+  <label>Usuário:</label>
+  <input type="text" [(ngModel)]="username" name="username" required class="mt-10">
+  <br>
+  <label>Senha:</label>
+  <input type="password" [(ngModel)]="password" name="password" required>
+  <br>
+    <label>Email:</label>
+    <input type="email" [(ngModel)]="email" name="email" required>
+  <button type="submit">Cadastrar</button>
+  <div *ngIf="error">{{ error }}</div>
+  <div *ngIf="success">{{ success }}</div>
+</form>

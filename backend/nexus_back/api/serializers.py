@@ -1,6 +1,13 @@
 from rest_framework import serializers
 from .models import Product
+class RegisterSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=150)
+    email = serializers.EmailField(required=False)
+    password = serializers.CharField(write_only=True)
 
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=150)
+    password = serializers.CharField(write_only=True)
 
 class ProductSerializer(serializers.ModelSerializer):
     valor_total_estoque = serializers.ReadOnlyField()

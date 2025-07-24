@@ -5,23 +5,12 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
 import { RouterModule } from "@angular/router"
 import { HttpClientModule } from "@angular/common/http"
 import { routes } from "./app/app.routes"
+import { appConfig } from "./app/app.config"
 
 // PrimeNG Configuration
 import { providePrimeNG } from "primeng/config"
 import Material from "@primeng/themes/aura"
 
-bootstrapApplication(AppComponent, {
-  providers: [
-    importProvidersFrom(BrowserAnimationsModule, RouterModule.forRoot(routes), HttpClientModule),
-    providePrimeNG({
-      theme: {
-        preset: Material,
-        options: {
-          prefix: "p",
-          darkModeSelector: "light",
-          cssLayer: false,
-        },
-      },
-    }),
-  ],
-}).catch((err) => console.error(err))
+bootstrapApplication(AppComponent, appConfig)
+
+.catch((err) => console.error(err))

@@ -1,16 +1,4 @@
-import { Component } from "@angular/core"
-import { Router } from "@angular/router"
-import { ToolbarModule } from "primeng/toolbar"
-import { ButtonModule } from "primeng/button"
-import { CommonModule } from "@angular/common"
-import { AuthService } from '../../services/auth.service';
-import { Header } from "primeng/api"
-
- @Component({
-  standalone: true,
-  selector: "app-header",
-  imports: [CommonModule, ToolbarModule, ButtonModule],
-  template: `    <div class="fixed top-0 left-0 w-full z-[1] bg-transparent">
+    <div class="fixed top-0 left-0 w-full z-[1] bg-transparent">
       <div class="container mx-auto px-4">
         <p-toolbar class="border-0 bg-white shadow-none py-4">
           <div class="p-toolbar-group-start">
@@ -73,33 +61,3 @@ import { Header } from "primeng/api"
         </p-toolbar>
       </div>
     </div>
-  `,
-})
-
-export class HeaderComponent {
-  constructor(private router: Router, private authService: AuthService) {}
-
-  navigateHome() {
-    this.router.navigate(["/produtos"])
-  }
-
-  navigateToProducts() {
-    this.router.navigate(["/produtos"])
-  }
-
-  navigateToNewProduct() {
-    this.router.navigate(["/produtos/novo"])
-  }
-
-  isAuthenticated(): boolean {
-    return this.authService.isAuthenticated();
-  }
-
-  logout() {
-    this.authService.logout();
-    this.router.navigate(["/login"]);
-  }
-  getUsername(): string {
-  return this.authService.currentUserValue?.username || '';
-}
-}
